@@ -22,3 +22,5 @@ createComponent = function (userComponent, template = null) {
 
   return component;
 };
+
+export { createComponent };

@@ -1,0 +1,15 @@
+.border-s{
+    border: 1px solid #000;
+}
+
+.rounder-s{
+    border-radius: 1em;
+}
+
+.p-2{
+    padding: 1em;
+}
+
+.fit-content{
+    width: fit-content;
+}
