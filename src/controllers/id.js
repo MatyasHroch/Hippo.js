@@ -1,10 +1,9 @@
-import { Global } from "../globals";
+import { Global } from "../globals.js";
 
 /**
  *
  * @returns {number} The next id in the sequence.
  */
-
 function createId() {
   //   console.log("Global in createId:", Global);
   if (!Global.variables.nextId) {

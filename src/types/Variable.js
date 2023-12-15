@@ -1,7 +1,5 @@
-// Path: src/types/Component.js
-
 /**
- * @typedef {Object} MyNode
+ * @type {Object} MyNode
  * @property {HTMLElement} element
  * @property {string} elementTemp
  */
@@ -12,7 +10,5 @@
  * @property {string} fullName
  * @property {Object} value
  * @property {number} componentId
- * @property {[MyNode]} nodes
+ * @property {Array<MyNode>} nodes
  */
-
-export { Variable };

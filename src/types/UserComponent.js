@@ -1,5 +1,5 @@
 /**
  * @typedef {Object} UserComponent
- * @property {Object} data
+ * @property {Object} vars
  * @property {HTMLElement | string} template
  */
