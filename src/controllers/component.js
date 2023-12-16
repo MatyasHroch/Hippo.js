@@ -27,9 +27,6 @@ function createComponent(userComponent, template = null) {
   component.templateString = userComponent.templateString;
   component.methods = createMethods(userComponent.methods, component);
 
-  // console.log("created Components methods:");
-  // console.log(component.methods);
-
   return component;
 }
 
@@ -40,16 +37,12 @@ function createComponent(userComponent, template = null) {
  * @returns {InnerComponent} The rendered component.
  **/
 function renderComponent(component) {
-  // console.log("component in renderComponent:");
-  // console.log(component);
   if (!component) node = document.body;
 
   // TODO include properties to the rendering
   const { template, vars } = component;
   const renderedTemplate = renderTemplate(template, vars);
   component.renderedTemplate = renderedTemplate;
-  // console.log("component in renderComponent:");
-  // console.log(component);
 
   return component;
 }
@@ -62,9 +55,7 @@ function renderComponent(component) {
  **/
 function mountComponent(renderedComponent, node) {
   if (!node) node = document.body;
-
   node.appendChild(renderedComponent.renderedTemplate);
-
   return renderedComponent.renderedTemplate;
 }
 

@@ -71,7 +71,7 @@ function renderVariable(nodeText, variables) {
     const variable = variables[variableName];
     if (!variable) console.error("Variable not found.");
 
-    const value = JSON.stringify(variable.value + " ->" + variable.fullName);
+    const value = variable.value;
     const element = document.createTextNode(value);
     variable.nodes.push(element);
     return element;
@@ -90,7 +90,7 @@ function setVariable(variable, value) {
   variable.updated = true;
   variable.updating = true;
   for (const node of variable.nodes) {
-    node.textContent = JSON.stringify(value);
+    node.textContent = value;
   }
   variable.updating = false;
 }

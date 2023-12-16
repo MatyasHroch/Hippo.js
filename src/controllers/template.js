@@ -27,8 +27,6 @@ function renderTemplate(template, variables) {
   const clonedTemplate = template.cloneNode(true); // first we will clone it so we will not change the original template
   const textNodes = getTextNodes(clonedTemplate);
   renderTextNodes(textNodes, variables);
-  // console.log("clonedTemplate:");
-  // console.log(clonedTemplate);
 
   return clonedTemplate;
 }
