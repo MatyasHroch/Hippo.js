@@ -19,20 +19,16 @@ function createComponent(userComponent, template = null) {
   if (!userComponent) return null;
   if (!template) userComponent.template = template;
 
-  const componentId = createId();
-  const variables = createVariables(userComponent.vars, componentId);
-  const htmlTemplate = createTemplate(userComponent.templateString);
-  // const methods = createMethods(userComponent.methods);
-  // const properties = assignProperties(userComponent.properties);
+  const component = {};
 
-  const component = {
-    id: componentId,
-    vars: variables,
-    template: htmlTemplate,
-    templateString: userComponent.templateString,
-    // methods: createMethods(userComponent.methods),
-    // props: properties,
-  };
+  component.id = createId();
+  component.vars = createVariables(userComponent.vars, component.id);
+  component.template = createTemplate(userComponent.templateString);
+  component.templateString = userComponent.templateString;
+  component.methods = createMethods(userComponent.methods, component);
+
+  // console.log("created Components methods:");
+  // console.log(component.methods);
 
   return component;
 }
@@ -52,8 +48,8 @@ function renderComponent(component) {
   const { template, vars } = component;
   const renderedTemplate = renderTemplate(template, vars);
   component.renderedTemplate = renderedTemplate;
-  console.log("component in renderComponent:");
-  console.log(component);
+  // console.log("component in renderComponent:");
+  // console.log(component);
 
   return component;
 }

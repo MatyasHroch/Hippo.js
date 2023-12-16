@@ -41,8 +41,7 @@ function printTextNodes(node) {
 function mapNodes(node, func) {
   if (!node) console.error("No node provided.");
   if (!func) console.error("No function provided.");
-  console.log("func:");
-  console.log(func);
+
   const nodes = [];
   nodes.push(node);
   func(node);

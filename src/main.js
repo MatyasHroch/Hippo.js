@@ -3,49 +3,40 @@ import {
   renderComponent,
   mountComponent,
 } from "./controllers/component.js";
-import { Global } from "./globals.js";
+
 import component from "./components/secondComponent/Second.js";
 
-const html = document.body;
-// html.innerHTML = component.templateString;
-// console.log(html);
-
-// console.log(html);
-
-// import createCompoment from "./controllers/components/builder.js";
-// import { renderComponent } from "./controllers/components/render.js";
-// import component from "./components/firstComponent/firstComponent.js";
-// import Global from "./universum.js";
-// import set from "./controllers/components/variables.js";
-
+// creates a component
 function createMySecondComponent() {
-  // console.log("component before creation, so User Component:");
-  // console.log(component);
-
   const innerComponent = createComponent(component);
-  console.log(innerComponent.template);
-  // console.log("component after creation, so innter Component:");
-  // console.log({ innerComponent });
-  //   console.log("innerComponent:");
-  //   console.log(innerComponent);
+  renderComponent(innerComponent);
 
-  //   const innerComponent = createCompoment(component);
-  //   console.log("innerComponent:");
-  //   console.log(innerComponent);
+  const mountDiv = document.querySelector("#app");
+  mountComponent(innerComponent, mountDiv);
 
-  const renderedComponent = renderComponent(innerComponent);
-  // console.log(renderedComponent.template);
-  console.log(renderedComponent.renderedTemplate);
-  mountComponent(renderedComponent, document.body);
-  // console.log("renderedComponent:");
-  // mountComponent(renderedComponent);
-  // console.log("renderedComponent:");
-  // console.log(renderedComponent);
-
-  // console.log("Global.variables:");
-  // console.log(Global.variables);
+  return innerComponent;
 }
 
-createMySecondComponent();
+// creates 5 components and stores them in an array
+const components = [];
+for (let i = 0; i < 5; i++) {
+  components.push(createMySecondComponent());
+}
 
-// export default createMySecondComponent;
+// console.log("are variables equal?");
+// console.log(components[0].vars === components[1].vars);
+
+// changes the name variable of the first component after 5 seconds
+// setTimeout(() => {
+//   console.log("Start changing");
+//   setVariable(Global.variables["name-0"], "NEW NAME");
+// }, 5000);
+
+// function test(param1, param2, param3) {
+//   console.log("Params of the TEST function:", param1, param2, param3);
+//   console.log("THIS:", this);
+// }
+
+// const testFunc = test.bind({ name: "TEST" });
+// testFunc("param1", "param2", "param3");
+// test("param1", "param2", "param3");

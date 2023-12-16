@@ -13,3 +13,19 @@
 .fit-content{
     width: fit-content;
 }
+
+.flex {
+    display: flex;
+}
+
+.gap-2 {
+    gap: 1em;
+}
+
+.wrap {
+    flex-wrap: wrap;
+}
+
+.m-auto {
+    margin: auto;
+}

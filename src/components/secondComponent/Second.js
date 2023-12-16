@@ -1,39 +1,31 @@
 function getTemplatePath() {
-  const currentScriptPath1 = new URL(import.meta.url).pathname;
-
-  const currentScriptDirectory = currentScriptPath1.substring(
-    0,
-    currentScriptPath1.lastIndexOf("/")
-  );
-
-  return currentScriptDirectory + "/Second.html";
+  const currentScriptPath = new URL(import.meta.url).pathname;
+  const scriptFileName = currentScriptPath.split(".").shift();
+  const templatePath = scriptFileName + ".html";
+  return templatePath;
+}
+async function getTemplateString() {
+  const response = await fetch(getTemplatePath());
+  const templateString = await response.text();
+  return templateString;
 }
 
-const templateString = `<article class="border-s rounder-s p-2 fit-content">
-<div>
-  <span>{{ message }}</span>
-</div>
-<button>Press Me To change the message</button>
-<div>Surame: {{ surname }}</div>
-<div>
-  Name:
-  <span>the {{ name }}</span>
-</div>
-<section>Neco neco <span>Neco2 neco2</span> Neco3 neco3</section>
-</article>                    `;
-
 export default {
-  templateString: templateString,
+  templateString: await getTemplateString(),
   templatePath: getTemplatePath(),
   vars: {
     message: "Hello World",
     name: "First",
     surname: "Component",
   },
-  // method: {
-  //   changeMessage: () => {
-  //     console.log("changeMessage");
+  methods: {
+    changeMessage: function (param1, param2, param3) {
+      const { vars } = this;
 
-  //   },
-  // },
+      if (this) console.log(this.vars.message);
+      setTimeout(() => {
+        vars.message.set("ABSOLUTELY NEW MESSAGEE!!!");
+      }, 2000);
+    },
+  },
 };

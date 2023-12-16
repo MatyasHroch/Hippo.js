@@ -31,7 +31,10 @@ function createVariable(name, value, componentId) {
     hidden: false,
     nodes: [],
   };
+
+  variable.set = (value) => setVariable(variable, value);
   Global.variables[fullName] = variable;
+
   return variable;
 }
 
@@ -43,21 +46,13 @@ function createVariable(name, value, componentId) {
  */
 function createVariables(variables, componentId) {
   const variablesObj = {};
+
   for (const name in variables) {
     const variable = createVariable(name, variables[name], componentId);
     variablesObj[variable.name] = variable;
   }
-  return variablesObj;
-}
 
-/**
- * Finds variables in the text node if there are any
- * @param {HTMLElement} node
- * @returns {RegExpMatchArray | null} Text nodes or null.
- */
-function findVariables(node) {
-  const foundVariables = node.textContent.match(/{{\s*[\w.]+\s*}}/g);
-  return foundVariables;
+  return variablesObj;
 }
 
 /**
@@ -76,7 +71,7 @@ function renderVariable(nodeText, variables) {
     const variable = variables[variableName];
     if (!variable) console.error("Variable not found.");
 
-    const value = JSON.stringify(variable.value);
+    const value = JSON.stringify(variable.value + " ->" + variable.fullName);
     const element = document.createTextNode(value);
     variable.nodes.push(element);
     return element;
@@ -85,4 +80,29 @@ function renderVariable(nodeText, variables) {
   return document.createTextNode(nodeText);
 }
 
-export { createVariables, renderVariable, findVariables };
+/**
+ * Sets the value of the variable and updates the nodes.
+ * @param {Variable} variable
+ * @param {any} value
+ */
+function setVariable(variable, value) {
+  variable.value = value;
+  variable.updated = true;
+  variable.updating = true;
+  for (const node of variable.nodes) {
+    node.textContent = JSON.stringify(value);
+  }
+  variable.updating = false;
+}
+
+/**
+ * Finds variables in the text node if there are any
+ * @param {HTMLElement} node
+ * @returns {RegExpMatchArray | null} Text nodes or null.
+ */
+function findVariables(node) {
+  const foundVariables = node.textContent.match(/{{\s*[\w.]+\s*}}/g);
+  return foundVariables;
+}
+
+export { createVariables, renderVariable, findVariables, setVariable };
