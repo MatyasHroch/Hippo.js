@@ -1,3 +1,6 @@
+import { getTextNodes } from "../utils/domUtils.js";
+import { renderVariable, findVariables } from "./variable.js";
+
 /**
  * Transforms string to html structure.
  * Later we will optimize this function.
@@ -21,32 +24,64 @@ function renderTemplate(template, variables) {
   if (!template) return console.error("No template provided.");
   if (!variables) return console.error("No variables provided.");
 
-  // first we will clone it so we will not change the original template
-  const clonedTemplate = template.cloneNode(true);
-  const nodes = mapNodes(clonedTemplate);
+  const clonedTemplate = template.cloneNode(true); // first we will clone it so we will not change the original template
+  const textNodes = getTextNodes(clonedTemplate);
+  renderTextNodes(textNodes, variables);
+  console.log("clonedTemplate:");
+  console.log(clonedTemplate);
 
-  // now we will go through all variables and replace the variable names with the values
-
-  // console.log({ renderedTemplate });
-  // return renderedTemplate;
+  return clonedTemplate;
 }
 
-function mapNodes(node, func) {
-  const nodes = [];
-  nodes.push(node);
-  func(node);
-
-  if (node.hasChildNodes()) {
-    node.childNodes.forEach((childNode) => {
-      nodes.push(...mapNodes(childNode));
-    });
+/**
+ * Render text nodes by splitting them into parts and composing them together.
+ * @param {Array<HTMLElement>} textNodes
+ */
+function renderTextNodes(textNodes, variables) {
+  for (const node of textNodes) {
+    const foundVariables = findVariables(node);
+    if (foundVariables) {
+      const nodeText = node.nodeValue;
+      const splittedText = splitNodeText(nodeText);
+      const parent = node.parentNode;
+      parent.removeChild(node);
+      composeTextNodes(splittedText, variables, parent);
+    }
   }
-  return nodes;
 }
 
-function findVariables(node) {
-  const foundVariables = node.textContent.match(/{{\s*[\w.]+\s*}}/g);
-  return foundVariables;
+/**
+ * Compose text nodes from the splitted text and variables.
+ * Also calls renderVariable for each variable.
+ * And appends the text node to the parent.
+ * @param {Array<string>} splittedText
+ * @param {Array<Variable>} variables
+ * @param {HTMLElement} parent
+ * @returns {HTMLElement} The parent.
+ */
+function composeTextNodes(splittedText, variables, parent) {
+  for (const text of splittedText) {
+    const textNode = renderVariable(text, variables);
+    parent.appendChild(textNode);
+  }
+  return parent;
+}
+
+/**
+ * Splits the node text into parts so we set apart the variables.
+ * @param {string} nodeText
+ * @returns {Array<string>} The splitted text.
+ */
+function splitNodeText(nodeText) {
+  // Define the pattern for matching text and placeholders
+  const pattern = /({{[^{}]*}})/;
+
+  // Split the text using the pattern
+  const textParts = nodeText.split(pattern);
+
+  const filteredTextParts = textParts.filter((textPart) => textPart !== "");
+
+  return filteredTextParts;
 }
 
 export { createTemplate, renderTemplate };

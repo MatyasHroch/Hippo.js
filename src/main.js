@@ -1,26 +1,14 @@
-import { createComponent, renderComponent } from "./controllers/component.js";
+import {
+  createComponent,
+  renderComponent,
+  mountComponent,
+} from "./controllers/component.js";
 import { Global } from "./globals.js";
-
 import component from "./components/secondComponent/Second.js";
 
-const html = (document.body.innerHTML = component.templateString);
-
-function printTextNodes(node) {
-  if (node.nodeType === Node.TEXT_NODE) {
-    console.log("TEXT NODE:", node);
-  }
-  if (node.hasChildNodes()) {
-    console.log("node.childNodes of node:");
-    console.log(node.childNodes);
-    console.log();
-
-    node.childNodes.forEach((childNode) => {
-      printTextNodes(childNode);
-    });
-  }
-}
-
-printTextNodes(document.body);
+const html = document.body;
+// html.innerHTML = component.templateString;
+// console.log(html);
 
 // console.log(html);
 
@@ -31,27 +19,33 @@ printTextNodes(document.body);
 // import set from "./controllers/components/variables.js";
 
 function createMySecondComponent() {
-  console.log("component before creation, so User Component:");
-  console.log({ component });
+  // console.log("component before creation, so User Component:");
+  // console.log(component);
 
-  const interComponent = createComponent(component);
-  console.log("component after creation, so innter Component:");
-  console.log({ interComponent });
-  //   console.log("interComponent:");
-  //   console.log(interComponent);
+  const innerComponent = createComponent(component);
+  console.log(innerComponent.template);
+  // console.log("component after creation, so innter Component:");
+  // console.log({ innerComponent });
+  //   console.log("innerComponent:");
+  //   console.log(innerComponent);
 
-  //   const interComponent = createCompoment(component);
-  //   console.log("interComponent:");
-  //   console.log(interComponent);
+  //   const innerComponent = createCompoment(component);
+  //   console.log("innerComponent:");
+  //   console.log(innerComponent);
 
-  const renderedComponent = renderComponent(interComponent);
-  console.log("renderedComponent:");
-  console.log(renderedComponent);
+  const renderedComponent = renderComponent(innerComponent);
+  // console.log(renderedComponent.template);
+  console.log(renderedComponent.renderedTemplate);
+  mountComponent(renderedComponent, document.body);
+  // console.log("renderedComponent:");
+  // mountComponent(renderedComponent);
+  // console.log("renderedComponent:");
+  // console.log(renderedComponent);
 
-  console.log("Global.variables:");
-  console.log(Global.variables);
+  // console.log("Global.variables:");
+  // console.log(Global.variables);
 }
 
-// createMySecondComponent();
+createMySecondComponent();
 
 // export default createMySecondComponent;

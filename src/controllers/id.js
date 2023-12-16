@@ -1,7 +1,7 @@
 import { Global } from "../globals.js";
 
 /**
- *
+ * Creates a new id, which is unique for the whole application.
  * @returns {number} The next id in the sequence.
  */
 function createId() {
