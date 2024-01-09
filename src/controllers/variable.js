@@ -87,12 +87,15 @@ function renderVariable(nodeText, variables) {
  */
 function setVariable(variable, value) {
   variable.value = value;
-  variable.updated = true;
   variable.updating = true;
+
+  if (variable === undefined || variable === null) value = "";
   for (const node of variable.nodes) {
     node.textContent = value;
   }
+
   variable.updating = false;
+  variable.updated = true;
 }
 
 /**

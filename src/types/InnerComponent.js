@@ -4,4 +4,5 @@
  * @property {HTMLElement | string} template
  * @property {Object<Function>} methods
  * @property {Object<Variable>} vars
+ * @property {Function} created
  */

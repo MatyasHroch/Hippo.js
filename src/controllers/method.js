@@ -16,10 +16,11 @@ function createMethod(method, component) {
     vars: component.vars,
     props: component.props,
     methods: component.methods,
+    id: component.id,
   });
 
-  console.log("bindedFunction called:");
-  bindedFunction("param1", "param2", "param3");
+  // console.log("bindedFunction called:");
+  // bindedFunction("param1", "param2", "param3");
 
   return bindedFunction;
 }
@@ -39,4 +40,4 @@ function createMethods(methods, component) {
   return methodsObj;
 }
 
-export { createMethods };
+export { createMethods, createMethod };

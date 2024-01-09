@@ -5,8 +5,9 @@ import "../types/UserComponent.js";
 import { createId } from "./id.js";
 import { createVariables } from "./variable.js";
 import { createTemplate } from "./template.js";
-import { createMethods } from "./method.js";
+import { createMethods, createMethod } from "./method.js";
 import { renderTemplate } from "./template.js";
+import { assignProperties } from "./propertie.js";
 
 /**
  * Creates a component from a user component.
@@ -19,6 +20,8 @@ function createComponent(userComponent, template = null) {
   if (!userComponent) return null;
   if (!template) userComponent.template = template;
 
+  // TODO if there is no value in the slots, then dont call the method for creating the slots values
+
   const component = {};
 
   component.id = createId();
@@ -26,6 +29,15 @@ function createComponent(userComponent, template = null) {
   component.template = createTemplate(userComponent.templateString);
   component.templateString = userComponent.templateString;
   component.methods = createMethods(userComponent.methods, component);
+
+  // assigning the created method to the component and calling it
+  component.created = createMethod(userComponent.created, component);
+  component.created();
+
+  //
+
+  // component.props = assignProperties(component, userComponent.props);
+  //
 
   return component;
 }

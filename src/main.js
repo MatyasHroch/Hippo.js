@@ -8,6 +8,11 @@ import component from "./components/secondComponent/Second.js";
 
 // creates a component
 function createMySecondComponent() {
+  const emitter = {
+    emit: "THIS WILLL BE EMITTED",
+    name: "BEST EMITTER EVER",
+  };
+
   const innerComponent = createComponent(component);
   renderComponent(innerComponent);
 
