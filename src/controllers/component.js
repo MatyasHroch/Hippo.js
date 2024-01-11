@@ -34,10 +34,7 @@ function createComponent(userComponent, template = null) {
   component.created = createMethod(userComponent.created, component);
   component.created();
 
-  //
-
   // component.props = assignProperties(component, userComponent.props);
-  //
 
   return component;
 }

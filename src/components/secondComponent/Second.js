@@ -39,14 +39,13 @@ export default {
   },
   methods: {
     changeMessage: function (param1, param2, param3) {
-      const { vars } = this;
-      if (this) console.log(this.vars.message);
+      console.log(this.message);
       setTimeout(() => {
         vars.message.set("ABSOLUTELY NEW MESSAGEE!!!");
       }, 2000);
     },
   },
-  // emits: ["message"],
+  emits: ["message"],
   // recieves: {
   //   changeMessage: this.changeMessage,
   //   recieveMessage: function (message) {

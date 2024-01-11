@@ -13,14 +13,19 @@ function createMethod(method, component) {
   }
 
   const bindedFunction = newFunction.bind({
-    vars: component.vars,
-    props: component.props,
-    methods: component.methods,
-    id: component.id,
+    ...component.vars,
+    ...component.props,
+    ...component.methods,
+    ...component.id,
   });
 
-  // console.log("bindedFunction called:");
-  // bindedFunction("param1", "param2", "param3");
+  // TODO bind it without the names, just the functions
+  // TODO IMPORTANT - bind the emits to the component, so that the component can emit
+  if (component.emits) {
+    newFunction.bind({
+      emits: component.emits,
+    });
+  }
 
   return bindedFunction;
 }
