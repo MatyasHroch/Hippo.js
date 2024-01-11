@@ -4,15 +4,10 @@ import {
   mountComponent,
 } from "./controllers/component.js";
 
-import component from "./components/secondComponent/Second.js";
+import component from "./components/secondComponent/Card.js";
 
 // creates a component
 function createMySecondComponent() {
-  const emitter = {
-    emit: "THIS WILLL BE EMITTED",
-    name: "BEST EMITTER EVER",
-  };
-
   const innerComponent = createComponent(component);
   renderComponent(innerComponent);
 
@@ -24,10 +19,13 @@ function createMySecondComponent() {
 
 // creates 5 components and stores them in an array
 const components = [];
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 3; i++) {
   components.push(createMySecondComponent());
 }
 
+console.log("components created");
+// console.log(component.methods.emitSomeEvent("Hello from main"));
+// components[0].created();
 // console.log("are variables equal?");
 // console.log(components[0].vars === components[1].vars);
 

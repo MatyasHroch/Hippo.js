@@ -28,16 +28,18 @@ function createComponent(userComponent, template = null) {
   component.vars = createVariables(userComponent.vars, component.id);
   component.template = createTemplate(userComponent.templateString);
   component.templateString = userComponent.templateString;
+
+  component.emits = userComponent.emits;
+  component.handles = userComponent.handles;
+
+  component.handles = createMethods(userComponent.handles, component);
   component.methods = createMethods(userComponent.methods, component);
 
   // assigning the created method to the component and calling it
   component.created = createMethod(userComponent.created, component);
   component.created();
 
-  //
-
   // component.props = assignProperties(component, userComponent.props);
-  //
 
   return component;
 }

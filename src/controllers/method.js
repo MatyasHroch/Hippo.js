@@ -1,3 +1,5 @@
+import { createEmitMethods, createHandleMethod } from "./emitter.js";
+
 /**
  * Adds the component slots to the method to access them via 'this'.
  * @param {Function} method
@@ -8,19 +10,31 @@ function createMethod(method, component) {
   if (!method) console.error("Method is not defined.");
   if (!component) console.error("Component is not defined.");
 
+  const printThis = method.name == "emitSomeEvent";
+
   function newFunction(...arg) {
     method.call(this, ...arg);
   }
 
-  const bindedFunction = newFunction.bind({
-    vars: component.vars,
-    props: component.props,
-    methods: component.methods,
+  const dataToBind = {
+    ...component.vars,
+    ...component.props,
+    ...component.methods,
     id: component.id,
-  });
+    component: component,
+  };
 
-  // console.log("bindedFunction called:");
-  // bindedFunction("param1", "param2", "param3");
+  // TODO bind the emit function to the component, with the emit name and componentId
+  // if (component.emits && component.emits.length > 0) {
+  //   // console.log("Creating emits methods");
+  //   // console.log("emits", component.emits);
+  //   // console.log("handles", component.handles);
+  //   dataToBind.emit = createEmitMethods(component);
+  // }
+
+  const bindedFunction = newFunction.bind(dataToBind);
+
+  // if (printThis) console.log("this", bindedFunction);
 
   return bindedFunction;
 }
@@ -29,7 +43,6 @@ function createMethod(method, component) {
  * @param {Object<string,Function>} methods
  * @returns {Object<string,Function>} The methods.
  */
-
 function createMethods(methods, component) {
   const methodsObj = {};
 
