@@ -11,6 +11,8 @@ async function getTemplateString() {
   return templateString;
 }
 
+import { emit } from "../../controllers/emitter.js";
+
 export default {
   templateString: await getTemplateString(),
   templatePath: getTemplatePath(),
@@ -18,7 +20,9 @@ export default {
   created: function () {
     const { id } = this;
     console.log(`component ${id} created`);
-    console.log(this.emit.someEvent("Hello from created"));
+    // console.log(this.emit.someEvent("Hello from created"));
+    console.log("someEvent emitted from created component: " + this.id);
+    // emit("someEvent", id, "Hello from created emitted");
 
     // this.changeMessage();
   },
@@ -38,35 +42,29 @@ export default {
     changeMessage,
     changeName,
     emitSomeEvent: function (message) {
-      if (message != "Hello from main") {
-        console.log("this", this);
-        console.log("message is not correct");
-        return;
-      }
-      console.log("this", this);
+      console.log("emitSomeEvent accepted in the component:" + this.id);
       console.log({ message });
-      console.log(this.emitSomeEvent("hello"));
+      // console.log(this.emitSomeEvent("hello"));
       // this.emit.someEvent(message);
     },
   },
 
-  emits: ["someEvent"],
+  // emits: ["someEvent"],
 
-  handles: {
-    message: function (fromId, message) {
+  handlers: {
+    someEvent: function (fromId, message) {
       console.log("message received from " + fromId);
-      console.log(message);
-      this.changeMessage();
+      console.log({ message });
+      console.log("My 'this' is:");
+      // console.log(this);
+      this.changeMessage(message);
     },
   },
 };
 
-function changeMessage() {
-  console.log(this.message);
-
-  setTimeout(() => {
-    this.message.set("NEW MESSAGEE!!!" + this.id);
-  }, 2000);
+function changeMessage(message) {
+  console.log(message);
+  this.message.set(message + " " + this.id);
 }
 
 function changeName() {

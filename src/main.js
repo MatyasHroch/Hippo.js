@@ -5,6 +5,7 @@ import {
 } from "./controllers/component.js";
 
 import component from "./components/secondComponent/Card.js";
+import { emit } from "./controllers/emitter.js";
 
 // creates a component
 function createMySecondComponent() {
@@ -24,6 +25,13 @@ for (let i = 0; i < 3; i++) {
 }
 
 console.log("components created");
+
+setTimeout(() => {
+  console.log("Start changing");
+  emit("someEvent", -10, "Hello from main");
+}, 5000);
+
+// emit("someEvent", -10, "Hello from main");
 // console.log(component.methods.emitSomeEvent("Hello from main"));
 // components[0].created();
 // console.log("are variables equal?");

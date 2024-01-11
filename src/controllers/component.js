@@ -2,12 +2,16 @@
 import "../types/InnerComponent.js";
 import "../types/UserComponent.js";
 
+// CREATING COMPONENT
 import { createId } from "./id.js";
 import { createVariables } from "./variable.js";
 import { createTemplate } from "./template.js";
 import { createMethods, createMethod } from "./method.js";
-import { renderTemplate } from "./template.js";
+import { registerHandlers } from "./emitter.js";
 import { assignProperties } from "./propertie.js";
+
+// RENDERING COMPONENT
+import { renderTemplate } from "./template.js";
 
 /**
  * Creates a component from a user component.
@@ -29,11 +33,17 @@ function createComponent(userComponent, template = null) {
   component.template = createTemplate(userComponent.templateString);
   component.templateString = userComponent.templateString;
 
-  component.emits = userComponent.emits;
-  component.handles = userComponent.handles;
+  // just copy the emits and handlers from the user component
+  // component.emits = userComponent.emits;
+  component.handlers = userComponent.handlers;
 
-  component.handles = createMethods(userComponent.handles, component);
+  // creating the methods and assigning them to the component
+  // after that we have acces to the component and its values via 'this'
   component.methods = createMethods(userComponent.methods, component);
+  component.handlers = createMethods(userComponent.handlers, component);
+
+  // TODO subscribe to the emits
+  registerHandlers(component);
 
   // assigning the created method to the component and calling it
   component.created = createMethod(userComponent.created, component);

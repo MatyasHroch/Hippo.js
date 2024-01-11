@@ -1,4 +1,4 @@
-import { createEmitMethods, createHandleMethod } from "./emitter.js";
+// import { registerHandlers } from "./emitter.js";
 
 /**
  * Adds the component slots to the method to access them via 'this'.
@@ -9,8 +9,6 @@ import { createEmitMethods, createHandleMethod } from "./emitter.js";
 function createMethod(method, component) {
   if (!method) console.error("Method is not defined.");
   if (!component) console.error("Component is not defined.");
-
-  const printThis = method.name == "emitSomeEvent";
 
   function newFunction(...arg) {
     method.call(this, ...arg);
@@ -28,13 +26,11 @@ function createMethod(method, component) {
   // if (component.emits && component.emits.length > 0) {
   //   // console.log("Creating emits methods");
   //   // console.log("emits", component.emits);
-  //   // console.log("handles", component.handles);
+  //   // console.log("handlers", component.handlers);
   //   dataToBind.emit = createEmitMethods(component);
   // }
 
   const bindedFunction = newFunction.bind(dataToBind);
-
-  // if (printThis) console.log("this", bindedFunction);
 
   return bindedFunction;
 }
