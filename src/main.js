@@ -11,7 +11,7 @@ import { emit } from "./controllers/emitter.js";
 // creates components and stores them in an array
 const components = [];
 for (let i = 0; i < 3; i++) {
-  components.push(processComponent(Card));
+  // components.push(processComponent(Card));
   components.push(processComponent(Article));
 }
 

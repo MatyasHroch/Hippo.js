@@ -26,6 +26,8 @@ export default {
     viewMax: 10,
   },
 
+  // TODO set number of children
+  // TODO pass props
   children: {
     Card,
   },
