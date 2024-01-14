@@ -47,11 +47,29 @@ function createComponent(userComponent, template = null) {
 
   // assigning the created method to the component and calling it
   component.created = createMethod(userComponent.created, component);
+  component.children = getAllChildren(component);
+
   component.created();
 
   // component.props = assignProperties(component, userComponent.props);
 
   return component;
+}
+
+// TODO get all children from the template and a slot
+/**
+ * It finds all children, that component has declered in the template and returns them in a children ctructure
+ * @param {InnerComponent} component
+ */
+function getAllChildren(component) {
+  const template = component.template;
+
+  console.log({ template });
+
+  // we get all nodes, that have the attribute 'comp' and we get the value of the attribute
+  const children = template.querySelectorAll("[comp]");
+  console.log("__In Get All Children__");
+  console.log("All found children: ", children);
 }
 
 /**
@@ -60,8 +78,8 @@ function createComponent(userComponent, template = null) {
  * @param {object} node - The node to render the component in.
  * @returns {InnerComponent} The rendered component.
  **/
-function renderComponent(component) {
-  if (!component) node = document.body;
+function renderComponent(component, createChildren = false) {
+  if (!component) console.error("No component provided");
 
   // TODO include properties to the rendering
   const { template, vars } = component;
@@ -83,4 +101,35 @@ function mountComponent(renderedComponent, node) {
   return renderedComponent.renderedTemplate;
 }
 
-export { createComponent, renderComponent, mountComponent };
+/**
+ * It creates, render and mount the component.
+ * @param {UserComponent} component
+ * @returns {InnerComponent} The rendered component.
+ */
+function processComponent(component) {
+  const innerComponent = createComponent(component);
+  renderComponent(innerComponent);
+  const mountDiv = document.querySelector("#app");
+  mountComponent(innerComponent, mountDiv);
+  return innerComponent;
+}
+
+/**
+ * It finds all children and call create method with them
+ * @param {InnerComponent} component
+ */
+function createChildren(component) {}
+
+/**
+ * It finds all children and call render method with them
+ * @param {InnerComponent} component
+ */
+function renderChildren(component) {}
+
+/**
+ * It finds all children and call mount method with them
+ * @param {InnerComponent} component
+ */
+function mountChildren(component) {}
+
+export { createComponent, renderComponent, mountComponent, processComponent };

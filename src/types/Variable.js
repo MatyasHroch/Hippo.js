@@ -1,10 +1,4 @@
 /**
- * @type {Object} MyNode
- * @property {HTMLElement} element
- * @property {string} elementTemp
- */
-
-/**
  * @typedef {Object} Variable
  * @property {string} name
  * @property {string} fullName
@@ -14,5 +8,5 @@
  * @property {boolean} hidden
  * @property {boolean} updating
  * @property {number} componentId
- * @property {Array<MyNode>} nodes
+ * @property {Array<Node>} nodes
  */

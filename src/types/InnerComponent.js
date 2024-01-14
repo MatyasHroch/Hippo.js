@@ -5,4 +5,5 @@
  * @property {Object<Function>} methods
  * @property {Object<Variable>} vars
  * @property {Function} created
+ * @property {Object<InnerComponent>} children
  */

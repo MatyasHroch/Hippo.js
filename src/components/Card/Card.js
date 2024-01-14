@@ -1,16 +1,3 @@
-function getTemplatePath() {
-  const currentScriptPath = new URL(import.meta.url).pathname;
-  const scriptFileName = currentScriptPath.split(".").shift();
-  const templatePath = scriptFileName + ".html";
-  return templatePath;
-}
-
-async function getTemplateString() {
-  const response = await fetch(getTemplatePath());
-  const templateString = await response.text();
-  return templateString;
-}
-
 import { emit } from "../../controllers/emitter.js";
 
 export default {
@@ -19,9 +6,7 @@ export default {
 
   created: function () {
     const { id } = this;
-    console.log(`component ${id} created`);
-    // console.log(this.emit.someEvent("Hello from created"));
-    console.log("someEvent emitted from created component: " + this.id);
+    console.log(`component ${id} created, ${this.children}`);
     // emit("someEvent", id, "Hello from created emitted");
 
     // this.changeMessage();
@@ -75,4 +60,15 @@ function changeName() {
   }, 2000);
 }
 
-function emitSomeEvent() {}
+function getTemplatePath() {
+  const currentScriptPath = new URL(import.meta.url).pathname;
+  const scriptFileName = currentScriptPath.split(".").shift();
+  const templatePath = scriptFileName + ".html";
+  return templatePath;
+}
+
+async function getTemplateString() {
+  const response = await fetch(getTemplatePath());
+  const templateString = await response.text();
+  return templateString;
+}
