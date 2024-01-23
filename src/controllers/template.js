@@ -1,4 +1,4 @@
-import { getTextNodes } from "../utils/domUtils.js";
+import { getTextNodes } from "../utils/dom_utils.js";
 import { renderVariable, findVariables } from "./variable.js";
 
 /**
@@ -27,6 +27,10 @@ function renderTemplate(template, variables) {
   const clonedTemplate = template.cloneNode(true); // first we will clone it so we will not change the original template
   const textNodes = getTextNodes(clonedTemplate);
   renderTextNodes(textNodes, variables);
+
+  // TODO render all classes that uses variables or properties (vars or props)
+  // const classNodes = getClassNodes(clonedTemplate);
+  // renderClasses(classNodes, variables)
 
   return clonedTemplate;
 }

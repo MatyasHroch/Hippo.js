@@ -6,11 +6,7 @@ export default {
 
   created: function () {
     const { id } = this;
-    // console.log(`component ${id} created, ${this.children}`);
-
-    // emit("someEvent", id, "Hello from created emitted");
-
-    // this.changeMessage();
+    console.log({ id });
   },
 
   vars: {
@@ -22,27 +18,22 @@ export default {
   props: {
     errorMess: null,
     alertMess: null,
+    background: "bg-red",
   },
 
   methods: {
     changeMessage,
     changeName,
     emitSomeEvent: function (message) {
-      // console.log("emitSomeEvent accepted in the component:" + this.id);
-      console.log({ message });
-      // console.log(this.emitSomeEvent("hello"));
-      // this.emit.someEvent(message);
+      emit("someEvent", message);
     },
   },
 
+  // not necessary
   // emits: ["someEvent"],
 
   handlers: {
     someEvent: function (message) {
-      // console.log("message received from " + fromId);
-      console.log({ message });
-      // console.log("My 'this' is:");
-      // console.log(this);
       this.changeMessage(message);
     },
   },

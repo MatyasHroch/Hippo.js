@@ -2,16 +2,26 @@
 import "../types/InnerComponent.js";
 import "../types/UserComponent.js";
 
-// CREATING COMPONENT
+// UTILS
+import { notEmpty } from "../utils/shortCuts.js";
+
+// CREATING COMPONENT'S PARTS
 import { createId } from "./id.js";
 import { createVariables } from "./variable.js";
 import { createTemplate } from "./template.js";
 import { createMethods, createMethod } from "./method.js";
 import { registerHandlers } from "./emitter.js";
-import { createProperties, createPropsToPass } from "./property.js";
+import { createProperties } from "./property.js";
 
 // RENDERING COMPONENT
 import { renderTemplate } from "./template.js";
+
+// PROCESSING CHILD COMPONENTS
+import {
+  createChildren,
+  renderChildren,
+  mountChildren,
+} from "./child_component.js";
 
 /**
  * Creates a component from a user component.
@@ -43,11 +53,12 @@ function createComponent(
   // creating the id, variables and template for the inner component
   component.id = createId();
 
-  // creating the reactives
-  if (userComponent.props && Object.keys(userComponent.props).length > 0) {
+  // creating the properties (assigning the values and variables to the component)
+  if (userComponent.props && notEmpty(userComponent.props)) {
     component.props = createProperties(userComponent, properties);
   }
 
+  // creating the reactive variables
   component.vars = createVariables(userComponent.vars, component.id);
 
   // creating the template
@@ -133,109 +144,6 @@ function processComponent(component) {
   const mountDiv = document.querySelector("#app");
   mountComponent(innerComponent, mountDiv);
   return innerComponent;
-}
-
-// TODO get all children from the template and a slot
-/**
- * It finds all children, that component has declered in the template and returns them in a children ctructure
- * @param {InnerComponent} component
- * @returns {Object<Node>} Object of children and their nodes
- */
-function getChildrenNodes(component) {
-  const renderedTemplate = component.renderedTemplate;
-
-  // console.log({ renderedTemplate });
-
-  // we get all nodes, that have the attribute 'comp' and we get the value of the attribute
-  const childNodes = renderedTemplate.querySelectorAll("[comp]");
-  // console.log({ childNodes });
-
-  // no we create an object that would have name of the children as a key and the value would be the node
-  const childrenNodes = {};
-  for (const child of childNodes) {
-    const name = child.getAttribute("comp");
-    childrenNodes[name] = child;
-  }
-
-  // console.log({ childrenNodes });
-  return childrenNodes;
-}
-
-/**
- * It finds all children and call create method with them
- * @param {InnerComponent} component
- * @param {Object<Node>} childrenNodes - Object of children nodes
- */
-function createChildren(parentComponent) {
-  const children = parentComponent.children;
-
-  // console.log("!!! In createChildren");
-
-  const createdChildren = {};
-  // HERE I CREATE THE CHILDREN COMPONENTS and assign them to the childComponents
-  for (const childName in children) {
-    // console.log("!!! In createChildren, arguments to createComponent:");
-    // console.log({ childName });
-
-    const childStructure = children[childName];
-    const propsToPass = createPropsToPass(parentComponent, childStructure);
-
-    const childComponent = childStructure.component;
-    childComponent.parent = parentComponent;
-
-    // console.log("Calling create COmponent with args:");
-    // console.log({ childComponent });
-    // console.log({ propsToPass });
-    createdChildren[childName] = createComponent(childComponent, propsToPass);
-  }
-
-  return createdChildren;
-}
-
-/**
- * It finds all children and call render method with them
- * @param {InnerComponent} component
- * @param {Object<Node>} childrenNodes - Object of children nodes
- */
-function renderChildren(component) {
-  const children = component.children;
-
-  const childComponents = Object.values(children);
-
-  // HERE I RENDER THE CHILDREN
-  for (const childComponent of childComponents) {
-    // console.log("!!! In renderChildren, arguments to renderComponent:");
-    // console.log({ childComponent });
-    renderComponent(childComponent);
-  }
-
-  return;
-}
-
-/**
- * It finds all children and call mount method with them
- * @param {InnerComponent} component
- */
-function mountChildren(component, childrenNodes = null) {
-  // TODO mount children
-  if (!childrenNodes) childrenNodes = getChildrenNodes(component);
-  // console.log("!!! In mountChildren, component");
-  // console.log({ component });
-
-  const children = component.children;
-
-  // HERE I MOUNT THE CHILDREN
-  for (const childName in childrenNodes) {
-    const childComponent = children[childName];
-    const nodeToMount = childrenNodes[childName];
-
-    // console.log("!!! In mountChildren, arguments to mountComponent:");
-    // console.log({ childComponent });
-    // console.log({ nodeToMount });
-    mountComponent(childComponent, nodeToMount);
-  }
-
-  return;
 }
 
 export { createComponent, renderComponent, mountComponent, processComponent };

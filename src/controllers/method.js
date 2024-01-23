@@ -42,6 +42,8 @@ function createMethod(method, component) {
 function createMethods(methods, component) {
   const methodsObj = {};
 
+  // TODO check if the method is a function
+  // TODO check if the method has other methods in the 'this' context
   for (const name in methods) {
     methodsObj[name] = createMethod(methods[name], component);
   }
