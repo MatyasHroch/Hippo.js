@@ -6,7 +6,8 @@ export default {
 
   created: function () {
     const { id } = this;
-    console.log(`component ${id} created, ${this.children}`);
+    // console.log(`component ${id} created, ${this.children}`);
+
     // emit("someEvent", id, "Hello from created emitted");
 
     // this.changeMessage();
@@ -27,7 +28,7 @@ export default {
     changeMessage,
     changeName,
     emitSomeEvent: function (message) {
-      console.log("emitSomeEvent accepted in the component:" + this.id);
+      // console.log("emitSomeEvent accepted in the component:" + this.id);
       console.log({ message });
       // console.log(this.emitSomeEvent("hello"));
       // this.emit.someEvent(message);
@@ -37,10 +38,10 @@ export default {
   // emits: ["someEvent"],
 
   handlers: {
-    someEvent: function (fromId, message) {
-      console.log("message received from " + fromId);
+    someEvent: function (message) {
+      // console.log("message received from " + fromId);
       console.log({ message });
-      console.log("My 'this' is:");
+      // console.log("My 'this' is:");
       // console.log(this);
       this.changeMessage(message);
     },
@@ -48,12 +49,12 @@ export default {
 };
 
 function changeMessage(message) {
-  console.log(message);
+  // console.log(message);
   this.message.set(message + " " + this.id);
 }
 
 function changeName() {
-  console.log(this.name);
+  // console.log(this.name);
 
   setTimeout(() => {
     this.name.set("NEW NAME!!!" + this.id);

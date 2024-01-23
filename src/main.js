@@ -15,7 +15,7 @@ for (let i = 0; i < 3; i++) {
   components.push(processComponent(Article));
 }
 
-console.log("components created");
+// console.log("components created");
 
 // setTimeout(() => {
 //   console.log("Start changing");

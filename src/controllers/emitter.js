@@ -4,6 +4,7 @@ import "../types/Emitter.js";
 const emitter = {
   globalEvents: {},
   emitFunctions: {},
+  queue: [],
 };
 
 // TODO - make it for not global events
@@ -59,7 +60,7 @@ function createEvent(name) {
  */
 function emitEvent(name, ...args) {
   if (!emitter.globalEvents[name]) {
-    console.log("Event has not existed");
+    // console.log("Event has not existed");
     emitter.globalEvents[name] = createEvent(name);
   }
 
@@ -67,9 +68,9 @@ function emitEvent(name, ...args) {
 
   const event = emitter.globalEvents[name];
   for (const handler of event.handlers) {
-    console.log("In the emit event");
-    console.log("handler", handler);
-    console.log("args", args);
+    // console.log("In the emit event");
+    // console.log("handler", handler);
+    // console.log("args", args);
     // here we call the component's handler
     handler(...args);
   }
@@ -84,6 +85,12 @@ function emitEvent(name, ...args) {
 // }
 
 // for now just emit the event, sth like public version of emitEvent
+
+/** Emits the event with the given name and the given arguments
+ * @param {string} name
+ * @param  {...any} args
+ * @returns {void}
+ */
 function emit(name, ...args) {
   emitEvent(name, ...args);
 }

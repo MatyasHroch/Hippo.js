@@ -63,8 +63,8 @@ function createVariables(variables, componentId) {
  * @param {Array<Variable>} variables
  */
 function renderVariable(nodeText, variables) {
-  if (!nodeText) console.log("No nodeText provided.");
-  if (!variables) console.log("No variables provided.");
+  if (!nodeText) console.error("No nodeText provided.");
+  if (!variables) console.error("No variables provided.");
 
   if (nodeText.startsWith("{{") && nodeText.endsWith("}}")) {
     const variableName = nodeText.slice(2, -2).trim();

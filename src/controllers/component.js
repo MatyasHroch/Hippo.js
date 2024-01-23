@@ -8,7 +8,7 @@ import { createVariables } from "./variable.js";
 import { createTemplate } from "./template.js";
 import { createMethods, createMethod } from "./method.js";
 import { registerHandlers } from "./emitter.js";
-import { assignProperties } from "./propertie.js";
+import { createProperties, createPropsToPass } from "./property.js";
 
 // RENDERING COMPONENT
 import { renderTemplate } from "./template.js";
@@ -17,25 +17,40 @@ import { renderTemplate } from "./template.js";
  * Creates a component from a user component.
  * It is possible to provide a template, otherwise the template will be loaded from the component.
  * @param {UserComponent} userComponent - The user component.
+ * @param {object<Variable>|Array<Variable>} properties - The properties that will be assigned to the component.
+ * @param {boolean} recursive - If the children should be created.
  * @param {string | null} template - The template, that can be used instead of the template from the component.
  * @returns {InnerComponent} The InnerComponent.
  **/
-function createComponent(userComponent, recursive = true, template = null) {
+function createComponent(
+  userComponent,
+  properties,
+  recursive = true,
+  template = null
+) {
   if (!userComponent) return null;
   if (!template) userComponent.template = template;
 
   // TODO if there is no value in the slots, then dont call the method for creating the slots values
-
   const component = {};
 
   // some properties are just copied from the user component
   component.templateString = userComponent.templateString;
   component.handlers = userComponent.handlers;
   component.children = userComponent.children;
+  component.parent = userComponent.parent;
 
   // creating the id, variables and template for the inner component
   component.id = createId();
+
+  // creating the reactives
+  if (userComponent.props && Object.keys(userComponent.props).length > 0) {
+    component.props = createProperties(userComponent, properties);
+  }
+
   component.vars = createVariables(userComponent.vars, component.id);
+
+  // creating the template
   component.template = createTemplate(userComponent.templateString);
 
   // creating the methods and assigning them to the component
@@ -52,17 +67,12 @@ function createComponent(userComponent, recursive = true, template = null) {
   component.created();
 
   if (recursive && userComponent.children) {
-    console.log("In create Component recursive, arguments to createChildren:");
-    console.log({ component });
-    // calling methods to the children
-    component.children = createChildren(component);
-    console.log(
-      "In create COMPONENT RECURSIVE, the component after createChildren:"
-    );
-    console.log({ component });
-  }
+    // TODO create multiple children
+    // creates a child component
 
-  // component.props = assignProperties(component, userComponent.props);
+    component.children = createChildren(component);
+    component.userChildren = userComponent.children;
+  }
 
   return component;
 }
@@ -77,13 +87,16 @@ function renderComponent(component, recursive = true) {
   if (!component) console.error("No component provided");
 
   // TODO include properties to the rendering
-  const { template, vars } = component;
-  const renderedTemplate = renderTemplate(template, vars);
+  const { template, vars, props } = component;
+
+  const allVars = { ...vars, ...props };
+
+  const renderedTemplate = renderTemplate(template, allVars);
   component.renderedTemplate = renderedTemplate;
 
   if (recursive && component.children) {
-    console.log("In remder Component recursive, arguments to renderChildren:");
-    console.log({ component });
+    // console.log("In remder Component recursive, arguments to renderChildren:");
+    // console.log({ component });
     renderChildren(component);
   }
 
@@ -101,8 +114,8 @@ function mountComponent(renderedComponent, node = null, recursive = true) {
   node.appendChild(renderedComponent.renderedTemplate);
 
   if (recursive && renderedComponent.children) {
-    console.log("In mount Component recursive, arguments to mountChildren:");
-    console.log({ renderedComponent });
+    // console.log("In mount Component recursive, arguments to mountChildren:");
+    // console.log({ renderedComponent });
     mountChildren(renderedComponent);
   }
 
@@ -131,11 +144,11 @@ function processComponent(component) {
 function getChildrenNodes(component) {
   const renderedTemplate = component.renderedTemplate;
 
-  console.log({ renderedTemplate });
+  // console.log({ renderedTemplate });
 
   // we get all nodes, that have the attribute 'comp' and we get the value of the attribute
   const childNodes = renderedTemplate.querySelectorAll("[comp]");
-  console.log({ childNodes });
+  // console.log({ childNodes });
 
   // no we create an object that would have name of the children as a key and the value would be the node
   const childrenNodes = {};
@@ -144,7 +157,7 @@ function getChildrenNodes(component) {
     childrenNodes[name] = child;
   }
 
-  console.log({ childrenNodes });
+  // console.log({ childrenNodes });
   return childrenNodes;
 }
 
@@ -153,19 +166,27 @@ function getChildrenNodes(component) {
  * @param {InnerComponent} component
  * @param {Object<Node>} childrenNodes - Object of children nodes
  */
-function createChildren(component) {
-  const children = component.children;
+function createChildren(parentComponent) {
+  const children = parentComponent.children;
+
+  // console.log("!!! In createChildren");
 
   const createdChildren = {};
-  // HERE I CREATE THE CHILDREN COMPONENTS and assign them to the component
+  // HERE I CREATE THE CHILDREN COMPONENTS and assign them to the childComponents
   for (const childName in children) {
-    console.log("!!! In createChildren, arguments to createComponent:");
-    console.log({ childName });
+    // console.log("!!! In createChildren, arguments to createComponent:");
+    // console.log({ childName });
 
-    const childComponent = children[childName];
-    createdChildren[childName] = createComponent(childComponent);
-    // TODO assign the created component to the component
-    // TODO assign properties to the component
+    const childStructure = children[childName];
+    const propsToPass = createPropsToPass(parentComponent, childStructure);
+
+    const childComponent = childStructure.component;
+    childComponent.parent = parentComponent;
+
+    // console.log("Calling create COmponent with args:");
+    // console.log({ childComponent });
+    // console.log({ propsToPass });
+    createdChildren[childName] = createComponent(childComponent, propsToPass);
   }
 
   return createdChildren;
@@ -183,8 +204,8 @@ function renderChildren(component) {
 
   // HERE I RENDER THE CHILDREN
   for (const childComponent of childComponents) {
-    console.log("!!! In renderChildren, arguments to renderComponent:");
-    console.log({ childComponent });
+    // console.log("!!! In renderChildren, arguments to renderComponent:");
+    // console.log({ childComponent });
     renderComponent(childComponent);
   }
 
@@ -198,8 +219,8 @@ function renderChildren(component) {
 function mountChildren(component, childrenNodes = null) {
   // TODO mount children
   if (!childrenNodes) childrenNodes = getChildrenNodes(component);
-  console.log("!!! In mountChildren, component");
-  console.log({ component });
+  // console.log("!!! In mountChildren, component");
+  // console.log({ component });
 
   const children = component.children;
 
@@ -208,9 +229,9 @@ function mountChildren(component, childrenNodes = null) {
     const childComponent = children[childName];
     const nodeToMount = childrenNodes[childName];
 
-    console.log("!!! In mountChildren, arguments to mountComponent:");
-    console.log({ childComponent });
-    console.log({ nodeToMount });
+    // console.log("!!! In mountChildren, arguments to mountComponent:");
+    // console.log({ childComponent });
+    // console.log({ nodeToMount });
     mountComponent(childComponent, nodeToMount);
   }
 
