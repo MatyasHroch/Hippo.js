@@ -38,8 +38,13 @@ function createComponent(
   recursive = true,
   template = null
 ) {
-  if (!userComponent) return null;
-  if (!template) userComponent.template = template;
+  if (!userComponent) {
+    console.error("User Component not provided");
+    return null;
+  }
+  if (!template) {
+    template = userComponent.template;
+  }
 
   // TODO if there is no value in the slots, then dont call the method for creating the slots values
   const component = {};

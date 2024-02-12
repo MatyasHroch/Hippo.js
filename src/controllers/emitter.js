@@ -64,7 +64,7 @@ function emitEvent(name, ...args) {
     emitter.globalEvents[name] = createEvent(name);
   }
 
-  console.log("NOW WE WOULD EMIT THE EVENT", name, args);
+  // console.log("NOW WE WOULD EMIT THE EVENT", name, args);
 
   const event = emitter.globalEvents[name];
   for (const handler of event.handlers) {
@@ -94,6 +94,8 @@ function emitEvent(name, ...args) {
 function emit(name, ...args) {
   emitEvent(name, ...args);
 }
+
+emitter.emit = emitEvent;
 
 export { registerHandlers, emitter, emit };
 

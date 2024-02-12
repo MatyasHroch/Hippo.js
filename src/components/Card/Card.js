@@ -1,16 +1,21 @@
-import { emit } from "../../controllers/emitter.js";
+import { emitter } from "../../controllers/emitter.js";
 
 export default {
   templateString: await getTemplateString(),
   templatePath: getTemplatePath(),
 
   created: function () {
-    const { id } = this;
-    console.log({ id });
+    // const { id } = this;
+    // console.log({ id });
+    // console.log("THIS:", this);
+    // this.changeMessage("NEW MESSAGE");
+    // this.changeName();
+    // console.log(this.emitSomeEvent);
+    this.emitSomeEvent("SOME EVENT");
   },
 
   vars: {
-    message: "Hello World",
+    message: "'Hello World is the default message'",
     name: "First",
     surname: "Component",
   },
@@ -18,6 +23,7 @@ export default {
   props: {
     errorMess: null,
     alertMess: null,
+    heading: null,
     background: "bg-red",
   },
 
@@ -25,7 +31,8 @@ export default {
     changeMessage,
     changeName,
     emitSomeEvent: function (message) {
-      emit("someEvent", message);
+      emitter.emit("someEvent", message);
+      console.log("emitSomeEvent's THIS:", this);
     },
   },
 
@@ -41,15 +48,17 @@ export default {
 
 function changeMessage(message) {
   // console.log(message);
-  this.message.set(message + " " + this.id);
+  console.log("message in changeMessage:", message);
+  console.log("changeMessage THIS:", this);
 }
 
 function changeName() {
   // console.log(this.name);
+  // setTimeout(() => {
+  //   this.name.set("NEW NAME!!!" + this.id);
+  // }, 2000);
 
-  setTimeout(() => {
-    this.name.set("NEW NAME!!!" + this.id);
-  }, 2000);
+  console.log("changeName THIS:", this);
 }
 
 function getTemplatePath() {

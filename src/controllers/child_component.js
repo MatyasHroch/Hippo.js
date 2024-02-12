@@ -1,5 +1,4 @@
 // TYPES
-
 import "../types/InnerComponent.js";
 import "../types/UserComponent.js";
 
@@ -11,6 +10,9 @@ import {
 
 import { createPropsToPass } from "./property.js";
 
+// CONSTANTS
+const componentAttribute = "component";
+
 /**
  * It finds all children, that component has declered in the template and returns them in a children ctructure
  * @param {InnerComponent} component
@@ -19,13 +21,15 @@ import { createPropsToPass } from "./property.js";
 function getChildrenNodes(component) {
   const renderedTemplate = component.renderedTemplate;
 
-  // we get all nodes, that have the attribute 'comp' and we get the value of the attribute
-  const childNodes = renderedTemplate.querySelectorAll("[comp]");
+  // we get all nodes, that have the attribute 'component' and we get the value of the attribute
+  const childNodes = renderedTemplate.querySelectorAll(
+    `[${componentAttribute}]`
+  );
 
   // no we create an object that would have name of the children as a key and the value would be the node
   const childrenNodes = {};
   for (const child of childNodes) {
-    const name = child.getAttribute("comp");
+    const name = child.getAttribute(componentAttribute);
     childrenNodes[name] = child;
   }
 
