@@ -1,5 +1,5 @@
 // import { registerHandlers } from "./emitter.js";
-import { emitter } from "./emitter";
+import { emitter } from "./emitter.js";
 
 /**
  * Adds the component slots to the method to access them via 'this'.
@@ -13,6 +13,7 @@ function createMethod(method, component, dataToBind) {
 
   if (!dataToBind) {
     dataToBind = {
+      emitter,
       ...component.vars,
       ...component.methods,
       ...component.props,
