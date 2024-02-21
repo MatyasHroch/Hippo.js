@@ -3,7 +3,7 @@ import "../types/InnerComponent.js";
 import "../types/UserComponent.js";
 
 // UTILS
-import { notEmpty } from "../utils/shortCuts.js";
+import { notEmpty } from "../utils/shortcuts.js";
 
 // CREATING COMPONENT'S PARTS
 import { createId } from "./id.js";
