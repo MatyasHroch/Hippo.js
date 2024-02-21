@@ -13,7 +13,9 @@ function createMethod(method, component, dataToBind) {
 
   if (!dataToBind) {
     dataToBind = {
+      // !!!!!! TRY THIS !!!!!!!
       emitter,
+      // !!!!!! TRY THIS !!!!!!!
       ...component.vars,
       ...component.methods,
       ...component.props,
@@ -41,6 +43,7 @@ function createMethods(methods, component) {
     ...component.vars,
     ...component.props,
     ...component.methods,
+    emitter,
     id: component.id,
     component: component,
   };
