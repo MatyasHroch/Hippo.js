@@ -126,8 +126,8 @@ const attributes = {
 function firstNameFactory() {
   // This is a closure that captures 'attributes'
   return function () {
-    console.log(this);
-    console.log(this.name);
+    // console.log(this);
+    // console.log(this.name);
   };
 }
 

@@ -32,7 +32,7 @@ export default {
     changeName,
     emitSomeEvent: function (message) {
       emitter.emit("someEvent", message);
-      console.log("emitSomeEvent's THIS:", this);
+      // console.log("emitSomeEvent's THIS:", this);
     },
   },
 

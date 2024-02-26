@@ -15,8 +15,8 @@ function createComputedVariables(variables, component) {
   // TODO - We create a methods from the computed functions
   for (const varName in variables) {
     const computedExpression = variables[varName];
-    console.log({ varName });
-    console.log(computedExpression);
+    // console.log({ varName });
+    // console.log(computedExpression);
   }
 
   // TODO - Then we evaluate those methods and set it as the values of new Variables

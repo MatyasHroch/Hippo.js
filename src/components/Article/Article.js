@@ -3,15 +3,17 @@ import Card from "../Card/Card.js";
 export default {
   created: function () {
     setTimeout(() => {
-      this.errorMess.set("NEW ERROR MESSAGE");
-      this.heading.set("NEW HEADING");
-
-      this.name.set = "herbert";
+      // this.errorMess.set("NEW ERROR MESSAGE");
+      // this.heading.set("NEW HEADING");
+      this.name = "herbert";
+      console.log(this.name);
     }, 3000);
 
     console.log("Article created");
     console.log("Just the variable:", this.errorMess);
     console.log("The value:", this.errorMess.value);
+
+    this.errorMess = "Absoluuuudetttyyy";
   },
 
   computed: {

@@ -70,6 +70,8 @@ function createComponent(
   // creating the template
   component.template = createTemplate(userComponent.templateString);
 
+  // TODO - OBJECT TO BIND create the object to bind the this here, co every other entities can access it later
+
   // creating the methods and assigning them to the component
   // after that we have acces to the component and its values via 'this'
   component.methods = createMethods(userComponent.methods, component);

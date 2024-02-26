@@ -68,7 +68,14 @@ function createMethods(methods, component) {
  */
 
 function createObjToBind(component) {
-  const result = {};
+  const result = {
+    ...component.vars,
+    ...component.props,
+    ...component.methods,
+    emitter,
+    id: component.id,
+    component: component,
+  };
 
   // console.log("component.vars", component.vars);
 
@@ -88,15 +95,9 @@ function createObjToBind(component) {
       },
     });
   }
+  console.log({ result });
 
-  return {
-    ...component.vars,
-    ...component.props,
-    ...component.methods,
-    emitter,
-    id: component.id,
-    component: component,
-  };
+  return result;
 }
 
 export { createMethods, createMethod };
