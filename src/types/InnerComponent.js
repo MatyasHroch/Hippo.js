@@ -1,3 +1,5 @@
+import "./Variable.js";
+
 /**
  * @typedef {Object} InnerComponent
  * @property {number} id

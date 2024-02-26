@@ -39,14 +39,7 @@ function createMethods(methods, component) {
   // TODO check if the method is a function
   // TODO check if the method has other methods in the 'this' context
 
-  const dataToBind = {
-    ...component.vars,
-    ...component.props,
-    ...component.methods,
-    emitter,
-    id: component.id,
-    component: component,
-  };
+  const dataToBind = createObjToBind(component);
 
   for (const name in methods) {
     methodsObj[name] = createMethod(methods[name], component, dataToBind);
@@ -66,6 +59,44 @@ function createMethods(methods, component) {
   // }
 
   return methodsObj;
+}
+
+/**
+ * Creates an object to bind to the methods.
+ * @param {InnerComponent} component
+ * @returns {Object<string,any>} The object to bind.
+ */
+
+function createObjToBind(component) {
+  const result = {};
+
+  // console.log("component.vars", component.vars);
+
+  for (const varName in component.vars) {
+    const variable = component.vars[varName];
+    // console.log("variable:", variable);
+
+    // console.log("variable.name:", variable.name);
+
+    Object.defineProperty(result, variable.name, {
+      get: function () {
+        return variable.value;
+      },
+
+      set: function (value) {
+        variable.set(value);
+      },
+    });
+  }
+
+  return {
+    ...component.vars,
+    ...component.props,
+    ...component.methods,
+    emitter,
+    id: component.id,
+    component: component,
+  };
 }
 
 export { createMethods, createMethod };

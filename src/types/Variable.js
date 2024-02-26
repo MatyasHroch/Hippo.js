@@ -7,6 +7,8 @@
  * @property {boolean} deleted
  * @property {boolean} hidden
  * @property {boolean} updating
+ * @property {Array<Variable>} dependentVariables
+ * @property {Function} expression
  * @property {number} componentId
  * @property {Array<Node>} nodes
  */

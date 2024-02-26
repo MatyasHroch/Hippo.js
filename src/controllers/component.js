@@ -12,6 +12,7 @@ import { createTemplate } from "./template.js";
 import { createMethods, createMethod } from "./method.js";
 import { registerHandlers } from "./emitter.js";
 import { createProperties } from "./property.js";
+import { createComputedVariables } from "./computed.js";
 
 // RENDERING COMPONENT
 import { renderTemplate } from "./template.js";
@@ -72,6 +73,11 @@ function createComponent(
   // creating the methods and assigning them to the component
   // after that we have acces to the component and its values via 'this'
   component.methods = createMethods(userComponent.methods, component);
+  component.computed = createComputedVariables(
+    userComponent.computed,
+    component
+  );
+
   component.handlers = createMethods(userComponent.handlers, component);
 
   // registering the handlers so component can handle events

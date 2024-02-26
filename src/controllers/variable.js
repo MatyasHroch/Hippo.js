@@ -21,6 +21,7 @@ function getFullName(name, componentId) {
  */
 function createVariable(name, value, componentId) {
   const fullName = getFullName(name, componentId);
+
   const variable = {
     name,
     fullName,
@@ -81,18 +82,46 @@ function renderVariable(nodeText, variables) {
 }
 
 /**
+ * Re-renders variables values in the DOM
+ * @param {Variable} variable
+ * @param {any} value
+ */
+function reRenderVariable(variable, value) {
+  if (variable === undefined || variable === null) value = "";
+  for (const node of variable.nodes) {
+    node.textContent = value;
+  }
+}
+
+/**
+ * It will triger all the computed and watch-based variables
+ * @param {Variable} variable
+ * @returns
+ */
+function trigerDependentVariables(variable) {
+  const dependentVariables = variable.dependentVariables;
+  if (!dependentVariables) return;
+}
+
+/**
+ * It will do everything what needs to be done when the variable is updated
+ * @param {Variable} variable
+ */
+function handleVariableChange(variable) {
+  trigerDependentVariables(variable);
+  reRenderVariable(variable, variable.value);
+}
+
+/**
  * Sets the value of the variable and updates the nodes.
  * @param {Variable} variable
  * @param {any} value
  */
 function setVariable(variable, value) {
-  variable.value = value;
   variable.updating = true;
+  variable.value = value;
 
-  if (variable === undefined || variable === null) value = "";
-  for (const node of variable.nodes) {
-    node.textContent = value;
-  }
+  handleVariableChange(variable);
 
   variable.updating = false;
   variable.updated = true;
