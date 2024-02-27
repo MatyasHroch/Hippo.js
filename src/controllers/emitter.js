@@ -30,11 +30,13 @@ function registerHandler(name, component, hadler) {
  * @param {InnerComponent} component
  * @returns {void}
  */
-function registerHandlers(component) {
-  if (!component || !component.handlers) return;
+function registerHandlers(component, handlers) {
+  if (!handlers) {
+    handlers = component.handlers;
+  }
 
-  for (const name in component.handlers) {
-    registerHandler(name, component, component.handlers[name]);
+  for (const name in handlers) {
+    registerHandler(name, component, handlers[name]);
   }
 }
 

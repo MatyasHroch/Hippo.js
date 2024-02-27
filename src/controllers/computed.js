@@ -9,7 +9,7 @@ import { createVariables } from "./variable.js";
  * @param {Object<Variable>} variables
  * @param {InnerComponent} component
  */
-function createComputedVariables(variables, component) {
+function createComputedVariables(component, variables, dataToBind = null) {
   const computedObj = {};
 
   // TODO - We create a methods from the computed functions

@@ -28,14 +28,14 @@ import {
  * Creates a component from a user component.
  * It is possible to provide a template, otherwise the template will be loaded from the component.
  * @param {UserComponent} userComponent - The user component.
- * @param {object<Variable>|Array<Variable>} properties - The properties that will be assigned to the component.
+ * @param {object<Variable>|Array<Variable>} fromParentProperties - The properties that will be assigned to the component.
  * @param {boolean} recursive - If the children should be created.
  * @param {string | null} template - The template, that can be used instead of the template from the component.
  * @returns {InnerComponent} The InnerComponent.
  **/
 function createComponent(
   userComponent,
-  properties,
+  fromParentProperties,
   recursive = true,
   template = null
 ) {
@@ -49,6 +49,7 @@ function createComponent(
 
   // TODO if there is no value in the slots, then dont call the method for creating the slots values
   const component = {};
+  const objectToBind = {};
 
   // some properties are just copied from the user component
   component.templateString = userComponent.templateString;
@@ -57,15 +58,23 @@ function createComponent(
   component.parent = userComponent.parent;
 
   // creating the id, variables and template for the inner component
-  component.id = createId();
+  const id = createId();
+  component.id = id;
+  objectToBind.id = id;
 
-  // creating the properties (assigning the values and variables to the component)
-  if (userComponent.props && notEmpty(userComponent.props)) {
-    component.props = createProperties(userComponent, properties);
+  // creating the properties (assigning the values and variables to the component and the object to bind)
+  if (component.props && notEmpty(component.props)) {
+    const props = createProperties(userComponent, fromParentProperties);
+    component.props = props;
+    Object.assign(objectToBind, { ...props });
   }
 
   // creating the reactive variables
-  component.vars = createVariables(userComponent.vars, component.id);
+  if (userComponent.vars && notEmpty(userComponent.vars)) {
+    const vars = createVariables(component, userComponent.vars);
+    component.vars = vars;
+    Object.assign(objectToBind, { ...vars });
+  }
 
   // creating the template
   component.template = createTemplate(userComponent.templateString);
@@ -74,19 +83,51 @@ function createComponent(
 
   // creating the methods and assigning them to the component
   // after that we have acces to the component and its values via 'this'
-  component.methods = createMethods(userComponent.methods, component);
-  component.computed = createComputedVariables(
-    userComponent.computed,
-    component
-  );
 
-  component.handlers = createMethods(userComponent.handlers, component);
+  if (userComponent.methods && notEmpty(userComponent.methods)) {
+    const methods = createMethods(
+      component,
+      userComponent.methods,
+      objectToBind
+    );
+    component.methods = methods;
+    Object.assign(objectToBind, { ...methods });
+  }
 
-  // registering the handlers so component can handle events
-  registerHandlers(component);
+  if (userComponent.computed && notEmpty(userComponent.computed)) {
+    const computed = createComputedVariables(
+      component,
+      component.computed,
+      objectToBind
+    );
+    component.computed = computed;
+    Object.assign(objectToBind, { ...computed });
+  }
+
+  if (userComponent.handlers && notEmpty(userComponent.handlers)) {
+    console.log("The bind object efore handlers created:");
+    console.log({ objectToBind });
+    const handlers = createMethods(
+      component,
+      userComponent.handlers,
+      objectToBind
+    );
+    component.handlers = handlers;
+
+    // handlers will not be accessed through the 'this' context
+    // Object.assign(objectToBind, { ...handlers });
+
+    // registering the handlers so component can handle events
+    registerHandlers(component, handlers);
+  }
 
   // assigning the created method to the component
-  component.created = createMethod(userComponent.created, component);
+  component.created = createMethod(userComponent.created, objectToBind);
+
+  // console.log("Now everything is done, aand we should call the created");
+  // console.log({ objectToBind });
+  // console.log({ component });
+
   // and calling it
   component.created();
 
@@ -110,9 +151,7 @@ function createComponent(
 function renderComponent(component, recursive = true) {
   if (!component) console.error("No component provided");
 
-  // TODO include properties to the rendering
   const { template, vars, props } = component;
-
   const allVars = { ...vars, ...props };
 
   const renderedTemplate = renderTemplate(template, allVars);

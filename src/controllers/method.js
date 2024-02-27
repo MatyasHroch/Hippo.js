@@ -7,22 +7,9 @@ import { emitter } from "./emitter.js";
  * @param {InnerComponent} component
  * @returns {Function} The  method.
  */
-function createMethod(method, component, dataToBind) {
+function createMethod(method, dataToBind) {
   if (!method) console.error("Method is not defined.");
-  if (!component) console.error("Component is not defined.");
-
-  if (!dataToBind) {
-    dataToBind = {
-      // !!!!!! TRY THIS !!!!!!!
-      emitter,
-      // !!!!!! TRY THIS !!!!!!!
-      ...component.vars,
-      ...component.methods,
-      ...component.props,
-      id: component.id,
-      component: component,
-    };
-  }
+  if (!dataToBind) console.error("Data to bind not provided");
 
   const boundedFunction = method.bind(dataToBind);
 
@@ -33,32 +20,37 @@ function createMethod(method, component, dataToBind) {
  * @param {Object<string,Function>} methods
  * @returns {Object<string,Function>} The methods.
  */
-function createMethods(methods, component) {
-  const methodsObj = {};
+function createMethods(component, methods, dataToBind = null) {
+  const resultMethods = {};
 
   // TODO check if the method is a function
   // TODO check if the method has other methods in the 'this' context
-
-  const dataToBind = createObjToBind(component);
+  if (!dataToBind) {
+    dataToBind = createObjToBind(component);
+  }
 
   for (const name in methods) {
-    methodsObj[name] = createMethod(methods[name], component, dataToBind);
+    if (name == "someEvent") {
+      console.log("bind object before the crating function");
+      console.log({ dataToBind });
+    }
+    resultMethods[name] = createMethod(methods[name], dataToBind);
   }
 
-  for (const functionName in methodsObj) {
-    dataToBind[functionName] = methodsObj[functionName];
-  }
+  // for (const functionName in resultMethods) {
+  //   dataToBind[functionName] = resultMethods[functionName];
+  // }
 
-  // for (const functionName in methodsObj) {
-  //   for (const otherFunctionName in methodsObj) {
-  //     const func = methodsObj[functionName];
-  //     const otherFunc = methodsObj[otherFunctionName];
+  // for (const functionName in resultMethods) {
+  //   for (const otherFunctionName in resultMethods) {
+  //     const func = resultMethods[functionName];
+  //     const otherFunc = resultMethods[otherFunctionName];
 
   //     func[otherFunctionName] = otherFunc;
   //   }
   // }
 
-  return methodsObj;
+  return resultMethods;
 }
 
 /**
@@ -77,25 +69,20 @@ function createObjToBind(component) {
     component: component,
   };
 
-  // console.log("component.vars", component.vars);
+  // for (const varName in component.vars) {
+  //   const variable = component.vars[varName];
 
-  for (const varName in component.vars) {
-    const variable = component.vars[varName];
-    // console.log("variable:", variable);
+  //   // Object.defineProperty(result, variable.name, {
+  //   //   get: function () {
+  //   //     return variable.value;
+  //   //   },
 
-    // console.log("variable.name:", variable.name);
-
-    Object.defineProperty(result, variable.name, {
-      get: function () {
-        return variable.value;
-      },
-
-      set: function (value) {
-        variable.set(value);
-      },
-    });
-  }
-  console.log({ result });
+  //   //   set: function (value) {
+  //   //     variable.set(value);
+  //   //   },
+  //   // });
+  // }
+  // console.log({ result });
 
   return result;
 }

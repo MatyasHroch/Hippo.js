@@ -45,8 +45,9 @@ function createVariable(name, value, componentId) {
  * @param {number} componentId
  * @returns {Array<Variable>} The variables.
  */
-function createVariables(variables, componentId) {
+function createVariables(component, variables) {
   const variablesObj = {};
+  const componentId = component.id;
 
   for (const name in variables) {
     const variable = createVariable(name, variables[name], componentId);

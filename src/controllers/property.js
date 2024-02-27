@@ -8,15 +8,16 @@ import "../types/Variable.js";
  * @returns {Object<Variable>}
  */
 // TODO rebuild the assignProperties function and all the other functions that are using it !!!!!!!!!!!!!!!!
-function createProperties(childComponent, properties) {
-  const resultProps = {};
-  const childProps = childComponent.props;
+function createProperties(childComponent, fromParentProperties) {
+  const resultProperties = {};
+  const childProperties = childComponent.props;
 
   for (const propName in childComponent.props) {
-    resultProps[propName] = properties[propName] || childProps[propName];
+    resultProperties[propName] =
+      fromParentProperties[propName] || childProperties[propName];
   }
 
-  return resultProps;
+  return resultProperties;
 }
 
 /**

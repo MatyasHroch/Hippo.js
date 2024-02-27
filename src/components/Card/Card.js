@@ -20,19 +20,12 @@ export default {
     surname: "Component",
   },
 
-  props: {
-    errorMess: null,
-    alertMess: null,
-    heading: null,
-    background: "bg-red",
-  },
-
   methods: {
     changeMessage,
     changeName,
     emitSomeEvent: function (message) {
-      emitter.emit("someEvent", message);
-      // console.log("emitSomeEvent's THIS:", this);
+      // emitter.emit("someEvent", message);
+      console.log("emitSomeEvent's THIS:", this);
     },
   },
 
@@ -41,6 +34,7 @@ export default {
 
   handlers: {
     someEvent: function (message) {
+      console.log(this);
       this.changeMessage(message);
     },
   },
