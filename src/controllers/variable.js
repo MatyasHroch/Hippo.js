@@ -45,9 +45,12 @@ function createVariable(name, value, componentId) {
  * @param {number} componentId
  * @returns {Array<Variable>} The variables.
  */
-function createVariables(component, variables) {
+function createVariables(component, variables, componentId = null) {
+  if (!componentId) {
+    componentId = component.id;
+  }
+
   const variablesObj = {};
-  const componentId = component.id;
 
   for (const name in variables) {
     const variable = createVariable(name, variables[name], componentId);
@@ -102,6 +105,23 @@ function reRenderVariable(variable, value) {
 function trigerDependentVariables(variable) {
   const dependentVariables = variable.dependentVariables;
   if (!dependentVariables) return;
+  for (const dependentVariable of dependentVariables) {
+    if (dependentVariable.updating) {
+      console.error("Cyclic dependency detected.");
+      return;
+    }
+
+    // TODO - better nested
+    dependentVariable.set(dependentVariable.expression());
+  }
+}
+
+function addDependentVariable(variable, dependentVariable) {
+  if (!variable.dependentVariables) {
+    variable.dependentVariables = new Set();
+  }
+
+  variable.dependentVariables.add(dependentVariable);
 }
 
 /**
@@ -138,4 +158,10 @@ function findVariables(node) {
   return foundVariables;
 }
 
-export { createVariables, renderVariable, findVariables, setVariable };
+export {
+  createVariables,
+  addDependentVariable,
+  renderVariable,
+  findVariables,
+  setVariable,
+};

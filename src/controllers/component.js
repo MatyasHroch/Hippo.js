@@ -56,6 +56,9 @@ function createComponent(
   component.handlers = userComponent.handlers;
   component.children = userComponent.children;
   component.parent = userComponent.parent;
+  component.props = {};
+  component.vars = {};
+  component.computed = {};
 
   // creating the id, variables and template for the inner component
   const id = createId();
@@ -63,7 +66,7 @@ function createComponent(
   objectToBind.id = id;
 
   // creating the properties (assigning the values and variables to the component and the object to bind)
-  if (component.props && notEmpty(component.props)) {
+  if (userComponent.props && notEmpty(userComponent.props)) {
     const props = createProperties(userComponent, fromParentProperties);
     component.props = props;
     Object.assign(objectToBind, { ...props });
@@ -97,7 +100,7 @@ function createComponent(
   if (userComponent.computed && notEmpty(userComponent.computed)) {
     const computed = createComputedVariables(
       component,
-      component.computed,
+      userComponent.computed,
       objectToBind
     );
     component.computed = computed;
@@ -105,8 +108,6 @@ function createComponent(
   }
 
   if (userComponent.handlers && notEmpty(userComponent.handlers)) {
-    console.log("The bind object efore handlers created:");
-    console.log({ objectToBind });
     const handlers = createMethods(
       component,
       userComponent.handlers,
@@ -151,8 +152,8 @@ function createComponent(
 function renderComponent(component, recursive = true) {
   if (!component) console.error("No component provided");
 
-  const { template, vars, props } = component;
-  const allVars = { ...vars, ...props };
+  const { template, vars, props, computed } = component;
+  const allVars = { ...vars, ...props, ...computed };
 
   const renderedTemplate = renderTemplate(template, allVars);
   component.renderedTemplate = renderedTemplate;

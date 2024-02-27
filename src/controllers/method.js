@@ -31,8 +31,8 @@ function createMethods(component, methods, dataToBind = null) {
 
   for (const name in methods) {
     if (name == "someEvent") {
-      console.log("bind object before the crating function");
-      console.log({ dataToBind });
+      // console.log("bind object before the crating function");
+      // console.log({ dataToBind });
     }
     resultMethods[name] = createMethod(methods[name], dataToBind);
   }

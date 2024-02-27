@@ -5,29 +5,24 @@ export default {
     setTimeout(() => {
       this.errorMess.set("NEW ERROR MESSAGE");
       this.heading.set("NEW HEADING");
+      this.surname.set("NEW SURNAME");
       console.log("full var 'name'", this.name);
     }, 3000);
-
-    // console.log("Article created");
-    // // console.log("Just the variable:", this.errorMess);
-    // // console.log("The value:", this.errorMess.value);
-
-    // this.errorMess = "Absoluuuudetttyyy";
   },
 
   computed: {
     fullName: function () {
-      let name = this.name;
+      let name = this.name.value;
 
       if (typeof name == "string") {
         name = name.toUpper;
       }
 
-      const fullName = `${this.name} | ${this.surname}`;
+      const fullName = `${this.name.value} | ${this.surname.value}`;
       return fullName;
     },
     smallName: function () {
-      return this.name + this.surname;
+      return this.name.value + this.surname.value;
     },
   },
 

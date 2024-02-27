@@ -25,7 +25,7 @@ export default {
     changeName,
     emitSomeEvent: function (message) {
       // emitter.emit("someEvent", message);
-      console.log("emitSomeEvent's THIS:", this);
+      // console.log("emitSomeEvent's THIS:", this);
     },
   },
 
@@ -34,7 +34,7 @@ export default {
 
   handlers: {
     someEvent: function (message) {
-      console.log(this);
+      // console.log(this);
       this.changeMessage(message);
     },
   },
@@ -42,8 +42,8 @@ export default {
 
 function changeMessage(message) {
   // console.log(message);
-  console.log("message in changeMessage:", message);
-  console.log("changeMessage THIS:", this);
+  // console.log("message in changeMessage:", message);
+  // console.log("changeMessage THIS:", this);
 }
 
 function changeName() {
