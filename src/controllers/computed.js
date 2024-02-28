@@ -12,8 +12,13 @@ import { createVariables, addDependentVariable } from "./variable.js";
 function createComputedVariables(
   component,
   userExpressions,
-  dataToBind = null
+  dataToBind = null,
+  componentId = null
 ) {
+  if (!componentId) {
+    componentId = component.id;
+  }
+
   // TODO - We create a methods from the computed functions
   const boundExpressions = createMethods(
     component,
@@ -32,7 +37,7 @@ function createComputedVariables(
   }
 
   // TODO - Then we can create the variables as usual
-  const variables = createVariables(component, valueObj);
+  const variables = createVariables(component, valueObj, componentId);
 
   // TODO - And then, after all is done, we can assign expression, and dependencies
 
@@ -70,11 +75,15 @@ function getEcpressionDependencies(component, expression) {
 
   let match = regex.exec(expression);
 
+  const allVars = { ...component.vars, ...component.props };
+
   while (match != null) {
     const dependency = match[1];
-    dependencies.push(
-      component.vars[dependency] || component.props[dependency]
-    );
+
+    if (allVars[dependency]) {
+      dependencies.push(allVars[dependency]);
+    }
+
     match = regex.exec(expression);
   }
 

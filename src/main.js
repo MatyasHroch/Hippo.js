@@ -7,10 +7,21 @@ import Article from "./components/Article/Article.js";
 
 // // creates components and stores them in an array
 const components = [];
-for (let i = 0; i < 2; i++) {
-  // components.push(processComponent(Card));
-  components.push(processComponent(Article));
+
+components.push(processComponent(Article));
+
+async function createArticles() {
+  for (let i = 0; i < 250; i++) {}
 }
+
+async function createArticles2() {
+  for (let i = 0; i < 500; i++) {
+    components.push(processComponent(Article));
+  }
+}
+
+// createArticles();
+// createArticles2();
 
 // console.log("components created");
 

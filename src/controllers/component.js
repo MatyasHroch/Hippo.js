@@ -37,7 +37,8 @@ function createComponent(
   userComponent,
   fromParentProperties,
   recursive = true,
-  template = null
+  template = null,
+  id = null
 ) {
   if (!userComponent) {
     console.error("User Component not provided");
@@ -61,7 +62,8 @@ function createComponent(
   component.computed = {};
 
   // creating the id, variables and template for the inner component
-  const id = createId();
+
+  if (!id) id = createId();
   component.id = id;
   objectToBind.id = id;
 
@@ -136,7 +138,7 @@ function createComponent(
     // TODO create multiple children
     // creates a child component
 
-    component.children = createChildren(component);
+    component.children = createChildren(component, objectToBind);
     component.userChildren = userComponent.children;
   }
 
@@ -199,4 +201,10 @@ function processComponent(component) {
   return innerComponent;
 }
 
-export { createComponent, renderComponent, mountComponent, processComponent };
+export {
+  createComponent,
+  renderComponent,
+  createId,
+  mountComponent,
+  processComponent,
+};

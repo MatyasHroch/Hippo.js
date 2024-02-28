@@ -29,6 +29,12 @@ export default {
     },
   },
 
+  props: {
+    heading: "default",
+    errorMess: "default",
+    fullName: "default",
+  },
+
   // not necessary
   // emits: ["someEvent"],
 

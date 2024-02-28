@@ -1,7 +1,7 @@
 import Card from "../Card/Card.js";
 
 export default {
-  created: function () {
+  created() {
     setTimeout(() => {
       this.errorMess.set("NEW ERROR MESSAGE");
       this.heading.set("NEW HEADING");
@@ -11,17 +11,11 @@ export default {
   },
 
   computed: {
-    fullName: function () {
-      let name = this.name.value;
-
-      if (typeof name == "string") {
-        name = name.toUpper;
-      }
-
+    fullName() {
       const fullName = `${this.name.value} | ${this.surname.value}`;
       return fullName;
     },
-    smallName: function () {
+    smallName() {
       return this.name.value + this.surname.value;
     },
   },
@@ -40,6 +34,17 @@ export default {
   children: {
     card: {
       component: Card,
+      props: {
+        heading() {
+          return this.heading.value;
+        },
+        errorMess() {
+          return this.errorMess.value;
+        },
+        fullName() {
+          return this.fullName.value;
+        },
+      },
     },
   },
 

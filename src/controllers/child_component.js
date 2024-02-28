@@ -6,6 +6,7 @@ import {
   createComponent,
   renderComponent,
   mountComponent,
+  createId,
 } from "./component.js";
 
 import { createPropsToPass } from "./property.js";
@@ -42,19 +43,35 @@ function getChildrenNodes(component) {
  * @param {InnerComponent} component
  * @param {Object<Node>} childrenNodes - Object of children nodes
  */
-function createChildren(parentComponent) {
+function createChildren(parentComponent, dataToBind = null) {
   const children = parentComponent.children;
 
   const createdChildren = {};
   // HERE I CREATE THE CHILDREN COMPONENTS and assign them to the childComponents
   for (const childName in children) {
     const childStructure = children[childName];
-    const propsToPass = createPropsToPass(parentComponent, childStructure);
+
+    const childId = createId();
+
+    const propsToPass = createPropsToPass(
+      parentComponent,
+      childStructure,
+      dataToBind,
+      childId
+    );
 
     const childComponent = childStructure.component;
     childComponent.parent = parentComponent;
 
-    createdChildren[childName] = createComponent(childComponent, propsToPass);
+    // TODO - IF THE CHILD HAS PROPERTIES
+
+    createdChildren[childName] = createComponent(
+      childComponent,
+      propsToPass,
+      true,
+      null,
+      childId
+    );
   }
 
   return createdChildren;
