@@ -11,7 +11,16 @@ import { createComputedVariables } from "./computed.js";
  */
 // TODO rebuild the assignProperties function and all the other functions that are using it !!!!!!!!!!!!!!!!
 function createProperties(childComponent, fromParentProperties) {
-  return fromParentProperties;
+  const properties = childComponent.props;
+
+  // if the property is not passed from the parent, then we just continue
+  // it will have its default value
+  // HERE WE CAN CHECK IF THE PROPERTY IS REQUIRED
+  for (const name in fromParentProperties) {
+    properties[name] = fromParentProperties[name];
+  }
+
+  return properties;
 }
 
 /**

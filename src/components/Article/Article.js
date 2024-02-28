@@ -36,7 +36,8 @@ export default {
       component: Card,
       props: {
         heading() {
-          return this.heading.value;
+          const heading = this.heading.value;
+          return heading.toLowerCase() + "- BUT THIS IS PROPERTIE";
         },
         errorMess() {
           return this.errorMess.value;
