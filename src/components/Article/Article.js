@@ -1,6 +1,7 @@
 import Card from "../Card/Card.js";
 
 export default {
+  // created is called after the component is created
   created() {
     setTimeout(() => {
       this.errorMess.set("NEW ERROR MESSAGE");
@@ -10,6 +11,7 @@ export default {
     }, 3000);
   },
 
+  // inside of the Computed you cannot use any computed properties
   computed: {
     fullName() {
       const fullName = `${this.name.value} | ${this.surname.value}`;
@@ -20,6 +22,7 @@ export default {
     },
   },
 
+  // new reactive variables
   vars: {
     heading: "OLD HEADING",
     viewMax: 10,

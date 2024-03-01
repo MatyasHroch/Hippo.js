@@ -82,8 +82,9 @@ function createComponent(
   }
 
   // creating the template
-  component.template = createTemplate(userComponent.templateString);
-
+  if (userComponent.templateString) {
+    component.template = createTemplate(userComponent.templateString);
+  }
   // TODO - OBJECT TO BIND create the object to bind the this here, co every other entities can access it later
 
   // creating the methods and assigning them to the component
@@ -124,15 +125,12 @@ function createComponent(
     registerHandlers(component, handlers);
   }
 
-  // assigning the created method to the component
-  component.created = createMethod(userComponent.created, objectToBind);
-
-  // console.log("Now everything is done, aand we should call the created");
-  // console.log({ objectToBind });
-  // console.log({ component });
-
-  // and calling it
-  component.created();
+  if (userComponent.created) {
+    // assigning the created method to the component
+    component.created = createMethod(userComponent.created, objectToBind);
+    // and calling it
+    component.created();
+  }
 
   if (recursive && userComponent.children) {
     // TODO create multiple children

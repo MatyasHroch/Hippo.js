@@ -160,6 +160,7 @@ function findVariables(node) {
 
 export {
   createVariables,
+  createVariable,
   addDependentVariable,
   renderVariable,
   findVariables,

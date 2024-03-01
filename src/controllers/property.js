@@ -2,23 +2,32 @@ import "../types/InnerComponent.js";
 import "../types/Variable.js";
 
 import { createComputedVariables } from "./computed.js";
+import { createVariable } from "./variable.js";
 
 /**
  * @param {InnerComponent} childComponent
- * @param {InnerComponent} parentComponent
- * @param {Object<Variable>} properties
+ * @param {Object<Variable>} fromParentProperties
  * @returns {Object<Variable>}
  */
 // TODO rebuild the assignProperties function and all the other functions that are using it !!!!!!!!!!!!!!!!
 function createProperties(childComponent, fromParentProperties) {
   const properties = childComponent.props;
 
+  const notProvidedProperties = {};
+  const componentId = childComponent.id;
+
   // if the property is not passed from the parent, then we just continue
   // it will have its default value
   // HERE WE CAN CHECK IF THE PROPERTY IS REQUIRED
-  for (const name in fromParentProperties) {
-    properties[name] = fromParentProperties[name];
+  for (const name in properties) {
+    if (fromParentProperties[name]) {
+      properties[name] = fromParentProperties[name];
+    } else {
+      properties[name] = createVariable(name, properties[name], componentId);
+    }
   }
+
+  console.log({ properties });
 
   return properties;
 }

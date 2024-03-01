@@ -8,12 +8,18 @@ import { emitter } from "./emitter.js";
  * @returns {Function} The  method.
  */
 function createMethod(method, dataToBind) {
-  if (!method) console.error("Method is not defined.");
+  if (!method) {
+    console.error("Method is not defined.");
+  }
   if (!dataToBind) console.error("Data to bind not provided");
 
-  const boundedFunction = method.bind(dataToBind);
-
-  return boundedFunction;
+  try {
+    const boundedFunction = method.bind(dataToBind);
+    return boundedFunction;
+  } catch (error) {
+    console.error(error);
+    console.log(method);
+  }
 }
 
 /**

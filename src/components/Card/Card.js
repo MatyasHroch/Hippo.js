@@ -1,4 +1,4 @@
-import { emitter } from "../../controllers/emitter.js";
+import Heading from "../Heading/Heading.js";
 
 export default {
   templateString: await getTemplateString(),
@@ -35,8 +35,19 @@ export default {
     fullName: "default",
   },
 
-  // not necessary
-  // emits: ["someEvent"],
+  children: {
+    heading: {
+      component: Heading,
+      props: {
+        text() {
+          return this.heading.value;
+        },
+        size() {
+          return 2;
+        },
+      },
+    },
+  },
 
   handlers: {
     someEvent: function (message) {
