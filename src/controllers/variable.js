@@ -30,9 +30,11 @@ function createVariable(name, value, componentId) {
     updated: false,
     deleted: false,
     hidden: false,
-    nodes: [],
+    textNodes: [],
+    inputNodes: [],
   };
 
+  // setting the public method 'set' for setting the variable value
   variable.set = (value) => setVariable(variable, value);
   Global.variables[fullName] = variable;
 
@@ -74,11 +76,16 @@ function renderVariable(nodeText, variables) {
   if (nodeText.startsWith("{{") && nodeText.endsWith("}}")) {
     const variableName = nodeText.slice(2, -2).trim();
     const variable = variables[variableName];
-    if (!variable) console.error("Variable not found.");
+
+    if (!variable) {
+      console.error("Variable not found.");
+      return document.createTextNode("");
+    }
 
     const value = variable.value;
     const element = document.createTextNode(value);
-    variable.nodes.push(element);
+    variable.textNodes.push(element);
+
     return element;
   }
 
@@ -92,8 +99,15 @@ function renderVariable(nodeText, variables) {
  */
 function reRenderVariable(variable, value) {
   if (variable === undefined || variable === null) value = "";
-  for (const node of variable.nodes) {
+
+  // changing just the text content
+  for (const node of variable.textNodes) {
     node.textContent = value;
+  }
+
+  // changing the value of the input and other elements with value attribute
+  for (const boundNode of variable.inputNodes) {
+    boundNode.value = value;
   }
 }
 
@@ -112,7 +126,7 @@ function trigerDependentVariables(variable) {
     }
 
     // TODO - better nested
-    dependentVariable.set(dependentVariable.expression());
+    setVariable(dependentVariable, dependentVariable.expression());
   }
 }
 

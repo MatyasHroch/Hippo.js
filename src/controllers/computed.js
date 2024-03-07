@@ -27,8 +27,8 @@ function createComputedVariables(
   );
 
   // TODO - Then we evaluate those methods and set it as the values of new Variables
-  // BE CAREFULL, we dont have the computed properties available in the expressions
-  // DONT USE THE COMPUTED INSIDE OF COMPUTED
+  // BE CAREFULL, we dont have the computed properties available in the expressions !!!
+  // DONT USE THE COMPUTED INSIDE OF COMPUTED !!!
 
   const valueObj = {};
 

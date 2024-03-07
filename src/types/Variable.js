@@ -10,5 +10,6 @@
  * @property {Array<Variable>} dependentVariables
  * @property {Function} expression
  * @property {number} componentId
- * @property {Array<Node>} nodes
+ * @property {Array<Node>} textNodes
+ * @property {Array<Node>} inputNodes
  */

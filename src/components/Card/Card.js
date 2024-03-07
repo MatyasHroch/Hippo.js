@@ -40,7 +40,7 @@ export default {
       component: Heading,
       props: {
         text() {
-          return this.heading.value;
+          return this.heading.value.toUpperCase();
         },
         size() {
           return 2;

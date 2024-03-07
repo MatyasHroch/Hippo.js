@@ -27,7 +27,7 @@ function createProperties(childComponent, fromParentProperties) {
     }
   }
 
-  console.log({ properties });
+  // console.log({ properties });
 
   return properties;
 }

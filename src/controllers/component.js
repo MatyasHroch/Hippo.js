@@ -23,6 +23,7 @@ import {
   renderChildren,
   mountChildren,
 } from "./child_component.js";
+import { bindVariables } from "./two_way_binding.js";
 
 /**
  * Creates a component from a user component.
@@ -157,6 +158,10 @@ function renderComponent(component, recursive = true) {
 
   const renderedTemplate = renderTemplate(template, allVars);
   component.renderedTemplate = renderedTemplate;
+
+  if (bindVariables(renderedTemplate, allVars)) {
+    console.log("Variables are binded");
+  }
 
   if (recursive && component.children) {
     // console.log("In remder Component recursive, arguments to renderChildren:");
