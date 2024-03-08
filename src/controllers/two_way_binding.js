@@ -16,7 +16,6 @@ function bindVariables(template, all_variables) {
   if (!all_variables) return console.error("No variables provided.");
 
   const nodesToBind = getNodesToBind(template);
-  console.log({ nodesToBind });
   createBindings(nodesToBind, all_variables);
 
   return true;
@@ -69,8 +68,8 @@ function inputHandler(e, variable) {
 }
 
 function changeHandler(e, variable) {
-  console.log({ variable });
-  console.log(e.target.value);
+  // console.log({ variable });
+  // console.log(e.target.value);
   setVariable(variable, e.target.value);
 }
 

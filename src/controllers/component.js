@@ -159,9 +159,7 @@ function renderComponent(component, recursive = true) {
   const renderedTemplate = renderTemplate(template, allVars);
   component.renderedTemplate = renderedTemplate;
 
-  if (bindVariables(renderedTemplate, allVars)) {
-    console.log("Variables are binded");
-  }
+  bindVariables(renderedTemplate, allVars);
 
   if (recursive && component.children) {
     // console.log("In remder Component recursive, arguments to renderChildren:");

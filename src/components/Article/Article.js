@@ -5,7 +5,7 @@ export default {
   created() {
     setTimeout(() => {
       this.errorMess.set("NEW ERROR MESSAGE");
-      this.heading.set("NEW HEADING");
+      // this.heading.set("NEW HEADING");
       this.surname.set("NEW SURNAME");
       console.log("full var 'name'", this.name);
     }, 3000);

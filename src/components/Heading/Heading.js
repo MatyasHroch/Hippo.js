@@ -4,7 +4,7 @@ export default {
 
   created() {
     setTimeout(() => {
-      this.text.set("HELLOOO WOOORLDDD");
+      // this.text.set("HELLOOO WOOORLDDD");
     }, 1000);
   },
 
@@ -14,8 +14,8 @@ export default {
   },
 
   computed: {
-    capitalizeHeading() {
-      return this.text.value.toUpperCase();
+    randomHeading() {
+      return this.text.value + " | " + Math.random() * 1000;
     },
   },
 

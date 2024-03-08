@@ -1,6 +1,7 @@
 // TYPES
 import "../types/InnerComponent.js";
 import "../types/UserComponent.js";
+import "../types/UserChildComponent.js";
 
 import {
   createComponent,
@@ -15,27 +16,28 @@ import { createPropsToPass } from "./property.js";
 const componentAttribute = "component";
 
 /**
- * It finds all children, that component has declered in the template and returns them in a children ctructure
- * @param {InnerComponent} component
- * @returns {Object<Node>} Object of children and their nodes
+ *
+ * @param {Object<UserChildComponent>} children
+ * @param {HTMLElement} renderedTemplate
+ * @returns
  */
-function getChildrenNodes(component) {
-  const renderedTemplate = component.renderedTemplate;
 
-  // we get all nodes, that have the attribute 'component' and we get the value of the attribute
-  const childNodes = renderedTemplate.querySelectorAll(
-    `[${componentAttribute}]`
-  );
+function getComponentTags(children, renderedTemplate) {
+  // find all nodes that have a name of the children
 
-  // no we create an object that would have name of the children as a key and the value would be the node
-  const childrenNodes = {};
-  for (const child of childNodes) {
-    const name = child.getAttribute(componentAttribute);
-    childrenNodes[name] = child;
+  const resultChildrenNodes = {};
+
+  for (const childName in children) {
+    const childNode = renderedTemplate.querySelector(childName);
+    if (!childNode) {
+      console.error(`There is no node with name ${childName}`);
+      continue;
+    }
+
+    resultChildrenNodes[childName] = childNode;
   }
 
-  // console.log({ childrenNodes });
-  return childrenNodes;
+  return resultChildrenNodes;
 }
 
 /**
@@ -101,19 +103,27 @@ function renderChildren(component) {
  */
 function mountChildren(component, childrenNodes = null) {
   // TODO mount children
-  if (!childrenNodes) childrenNodes = getChildrenNodes(component);
-
   const children = component.children;
+
+  if (!childrenNodes)
+    childrenNodes = getComponentTags(children, component.renderedTemplate);
 
   // HERE I MOUNT THE CHILDREN
   for (const childName in childrenNodes) {
     const childComponent = children[childName];
-    const nodeToMount = childrenNodes[childName];
 
-    mountComponent(childComponent, nodeToMount);
+    const specialComponentTag = childrenNodes[childName];
+    const parent = specialComponentTag.parentNode;
+    const repleacement = document.createElement("div");
+    repleacement.setAttribute("contains-component", true);
+
+    parent.replaceChild(repleacement, specialComponentTag);
+    mountComponent(childComponent, repleacement);
+
+    // mountComponent(childComponent, specialComponentTag);
   }
 
   return;
 }
 
-export { getChildrenNodes, createChildren, renderChildren, mountChildren };
+export { getComponentTags, createChildren, renderChildren, mountChildren };

@@ -1,8 +1,36 @@
 import Heading from "../Heading/Heading.js";
 
 export default {
-  templateString: await getTemplateString(),
-  templatePath: getTemplatePath(),
+  vars: {
+    message: "'Hello World is the default message'",
+    name: "First",
+    surname: "Component",
+  },
+
+  children: {
+    heading2: {
+      component: Heading,
+      props: {
+        text() {
+          return this.heading.value + " HHAHAA";
+        },
+        size() {
+          return 2;
+        },
+      },
+    },
+    heading1: {
+      component: Heading,
+      props: {
+        text() {
+          return this.heading.value.toUpperCase();
+        },
+        size() {
+          return 2;
+        },
+      },
+    },
+  },
 
   created: function () {
     // const { id } = this;
@@ -12,12 +40,6 @@ export default {
     // this.changeName();
     // console.log(this.emitSomeEvent);
     this.emitSomeEvent("SOME EVENT");
-  },
-
-  vars: {
-    message: "'Hello World is the default message'",
-    name: "First",
-    surname: "Component",
   },
 
   methods: {
@@ -35,26 +57,15 @@ export default {
     fullName: "default",
   },
 
-  children: {
-    heading: {
-      component: Heading,
-      props: {
-        text() {
-          return this.heading.value.toUpperCase();
-        },
-        size() {
-          return 2;
-        },
-      },
-    },
-  },
-
   handlers: {
     someEvent: function (message) {
       // console.log(this);
       this.changeMessage(message);
     },
   },
+
+  templateString: await getTemplateString(),
+  templatePath: getTemplatePath(),
 };
 
 function changeMessage(message) {

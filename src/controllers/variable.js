@@ -21,6 +21,7 @@ function getFullName(name, componentId) {
  */
 function createVariable(name, value, componentId) {
   const fullName = getFullName(name, componentId);
+  if (fullName.includes("eading")) console.log(fullName);
 
   const variable = {
     name,
@@ -143,6 +144,9 @@ function addDependentVariable(variable, dependentVariable) {
  * @param {Variable} variable
  */
 function handleVariableChange(variable) {
+  if (variable.name == "text")
+    console.log(variable.value, variable.componentId);
+
   trigerDependentVariables(variable);
   reRenderVariable(variable, variable.value);
 }
@@ -155,6 +159,9 @@ function handleVariableChange(variable) {
 function setVariable(variable, value) {
   variable.updating = true;
   variable.value = value;
+
+  if (variable.name == "text")
+    console.log(variable.value, variable.componentId);
 
   handleVariableChange(variable);
 
