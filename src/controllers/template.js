@@ -26,6 +26,7 @@ function renderTemplate(template, variables) {
 
   const clonedTemplate = template.cloneNode(true); // first we will clone it so we will not change the original template
   const textNodes = getTextNodes(clonedTemplate);
+
   renderTextNodes(textNodes, variables);
 
   // TODO render all classes that uses variables or properties (vars or props)
@@ -42,11 +43,13 @@ function renderTemplate(template, variables) {
 function renderTextNodes(textNodes, variables) {
   for (const node of textNodes) {
     const foundVariables = findVariables(node);
+
     if (foundVariables) {
       const nodeText = node.nodeValue;
       const splittedText = splitNodeText(nodeText);
       const parent = node.parentNode;
       parent.removeChild(node);
+
       composeTextNodes(splittedText, variables, parent);
     }
   }

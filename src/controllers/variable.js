@@ -21,7 +21,7 @@ function getFullName(name, componentId) {
  */
 function createVariable(name, value, componentId) {
   const fullName = getFullName(name, componentId);
-  if (fullName.includes("eading")) console.log(fullName);
+  // if (fullName.includes("eading")) console.log(fullName);
 
   const variable = {
     name,
@@ -99,10 +99,23 @@ function renderVariable(nodeText, variables) {
  * @param {any} value
  */
 function reRenderVariable(variable, value) {
-  if (variable === undefined || variable === null) value = "";
+  if (variable === undefined || variable === null) {
+    console.log(variable);
+    console.error("Variable not provided.");
 
-  // changing just the text content
+    console.log(value);
+    console.error("Value not provided.");
+  }
+  value = "";
+
   for (const node of variable.textNodes) {
+    // if (variable.fullName.includes("text-")) {
+    //   console.log("in reRenderVariable:");
+    //   console.log("variable:", variable);
+    //   console.log("node:", node);
+    // }
+
+    // changing just the text content
     node.textContent = value;
   }
 
@@ -144,10 +157,18 @@ function addDependentVariable(variable, dependentVariable) {
  * @param {Variable} variable
  */
 function handleVariableChange(variable) {
-  if (variable.name == "text")
-    console.log(variable.value, variable.componentId);
+  // if (!value) value = variable.value;
 
+  // if (variable.name == "text") console.log("in handle var change:", variable);
+  console.log("in handle var change:", variable, variable.value);
   trigerDependentVariables(variable);
+
+  // if (variable.name == "text") {
+  //   console.log("BEFORE reRenderVariable:");
+  //   console.log("variable:", variable);
+  //   console.log("value", variable.value);
+  // }
+
   reRenderVariable(variable, variable.value);
 }
 
@@ -160,8 +181,8 @@ function setVariable(variable, value) {
   variable.updating = true;
   variable.value = value;
 
-  if (variable.name == "text")
-    console.log(variable.value, variable.componentId);
+  // if (variable.name == "text")
+  console.log(variable.value, variable.fullName);
 
   handleVariableChange(variable);
 

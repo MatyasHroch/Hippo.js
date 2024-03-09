@@ -11,7 +11,7 @@ import { createVariable } from "./variable.js";
  */
 // TODO rebuild the assignProperties function and all the other functions that are using it !!!!!!!!!!!!!!!!
 function createProperties(childComponent, fromParentProperties) {
-  const properties = childComponent.props;
+  const properties = { ...childComponent.props };
 
   const notProvidedProperties = {};
   const componentId = childComponent.id;

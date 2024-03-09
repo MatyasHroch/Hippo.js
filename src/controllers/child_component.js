@@ -62,6 +62,11 @@ function createChildren(parentComponent, dataToBind = null) {
       childId
     );
 
+    // HERE IT IS ABSOLUTELY OK
+    // if (propsToPass && propsToPass.text) {
+    //   console.log("propsToPass.text", propsToPass.text);
+    // }
+
     const childComponent = childStructure.component;
     childComponent.parent = parentComponent;
 
@@ -86,7 +91,6 @@ function createChildren(parentComponent, dataToBind = null) {
  */
 function renderChildren(component) {
   const children = component.children;
-
   const childComponents = Object.values(children);
 
   // HERE I RENDER THE CHILDREN

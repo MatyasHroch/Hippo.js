@@ -13,7 +13,7 @@ components.push(processComponent(Article));
 console.log("");
 for (const varName in Global) {
   if (Global[varName]) {
-    console.log(Global[varName]);
+    // console.log(Global[varName]);
   }
 }
 

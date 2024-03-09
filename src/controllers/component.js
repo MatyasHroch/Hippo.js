@@ -154,12 +154,12 @@ function renderComponent(component, recursive = true) {
   if (!component) console.error("No component provided");
 
   const { template, vars, props, computed } = component;
-  const allVars = { ...vars, ...props, ...computed };
+  const allVariables = { ...vars, ...props, ...computed };
 
-  const renderedTemplate = renderTemplate(template, allVars);
+  const renderedTemplate = renderTemplate(template, allVariables);
   component.renderedTemplate = renderedTemplate;
 
-  bindVariables(renderedTemplate, allVars);
+  bindVariables(renderedTemplate, allVariables);
 
   if (recursive && component.children) {
     // console.log("In remder Component recursive, arguments to renderChildren:");
