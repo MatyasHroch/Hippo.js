@@ -105,8 +105,8 @@ function reRenderVariable(variable, value) {
 
     console.log(value);
     console.error("Value not provided.");
+    value = "";
   }
-  value = "";
 
   for (const node of variable.textNodes) {
     // if (variable.fullName.includes("text-")) {
