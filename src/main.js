@@ -8,12 +8,13 @@ import Article from "./components/Article/Article.js";
 // // creates components and stores them in an array
 const components = [];
 
-components.push(processComponent(Article));
+for (let i = 0; i < 3; i++) {
+  components.push(processComponent(Article));
+}
 
 console.log("");
 for (const varName in Global) {
   if (Global[varName]) {
-    // console.log(Global[varName]);
   }
 }
 

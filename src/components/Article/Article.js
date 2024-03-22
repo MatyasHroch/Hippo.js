@@ -37,6 +37,7 @@ export default {
   children: {
     card: {
       component: Card,
+
       props: {
         heading() {
           const heading = this.heading.value;
@@ -58,7 +59,10 @@ export default {
 
   props: {},
 
+  mutableProps: {},
+
   templateString: await getTemplateString(),
+
   templatePath: getTemplatePath(),
 };
 
