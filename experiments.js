@@ -1,3 +1,79 @@
+// WE WILL BE USING THE PROXY NOW
+
+const handler = {
+  get: function (target, prop, receiver) {
+    if (prop in target) {
+      console.log(`Getting the value of ${prop}`);
+      return target[prop].value; // or some transformation of target[prop], if you want
+    }
+    return undefined; // return undefined if the property does not exist
+  },
+  set: function (target, prop, value) {
+    console.log(`Setting the value of ${prop} to ${value}`);
+    const variable = target[prop];
+    variable.value = value;
+    return true; // indicating that the assignment was successful
+  },
+};
+
+function createContext(contextToInherit, allVariables) {
+  return new Proxy({ ...contextToInherit }, handler);
+}
+
+const initialObject = {
+  value: null,
+  updated: false,
+  deleted: false,
+  hidden: false,
+  updating: false,
+  expression: null,
+  componentId: null,
+};
+
+function createVariable(name, value, componentId, expression = null) {
+  const variable = {
+    ...initialObject,
+    name: name,
+    _value: value,
+    componentId: componentId,
+    expression: expression,
+    dependentVariables: [],
+    textNodes: [],
+    inputNodes: [],
+
+    get value() {
+      console.log(`Getting the value of ${name}`);
+      return this._value;
+    },
+
+    set value(value) {
+      this._value = value;
+      this.updated = true;
+    },
+  };
+
+  return variable;
+}
+
+const name = createVariable("name", "Peter", 1);
+console.log("directly _value: ", name._value); // Logs: Getting the value of name, then logs the value "Peter"
+console.log("directly value: ", name.value); // Logs: Getting the value of name, then logs the value "Peter"
+
+const context = createContext({ name });
+console.log("via context 'name': ", context.name); // Logs: Getting the value of variable, then logs the value "Peter"
+console.log("");
+
+function changeVariable() {
+  console.log("BEFORE: ", this.name);
+  this.name = "Jane";
+  console.log("AFTER: ", this.name);
+}
+
+const boundChangeVariable = changeVariable.bind(context);
+
+boundChangeVariable();
+console.log("via context 'name' again: ", context.name); // Logs: Getting the value of variable, then logs the value "Peter"
+
 // SOLVED BY BINDING AN OBJECT to
 
 // const methods = {};
