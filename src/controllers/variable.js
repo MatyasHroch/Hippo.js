@@ -157,18 +157,7 @@ function addDependentVariable(variable, dependentVariable) {
  * @param {Variable} variable
  */
 function handleVariableChange(variable) {
-  // if (!value) value = variable.value;
-
-  // if (variable.name == "text") console.log("in handle var change:", variable);
-  console.log("in handle var change:", variable, variable.value);
   trigerDependentVariables(variable);
-
-  // if (variable.name == "text") {
-  //   console.log("BEFORE reRenderVariable:");
-  //   console.log("variable:", variable);
-  //   console.log("value", variable.value);
-  // }
-
   reRenderVariable(variable, variable.value);
 }
 

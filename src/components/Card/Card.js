@@ -5,6 +5,7 @@ export default {
     message: "'Hello World is the default message'",
     name: "First",
     surname: "Component",
+    file: null,
   },
 
   children: {
