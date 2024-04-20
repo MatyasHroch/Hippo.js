@@ -20,6 +20,12 @@ export default {
     smallName() {
       return this.name.value + this.surname.value;
     },
+    surnameClass() {
+      if (this.showSurname.value) {
+        return "display: inherit;";
+      }
+      return "display: none;";
+    },
   },
 
   // new reactive variables
@@ -29,6 +35,9 @@ export default {
     errorMess: "OLD ERROR MESSAGE",
     name: "Albert",
     surname: "Einstein",
+    disabled: false,
+    margin: "m-2",
+    showSurname: true,
   },
 
   // TODO set number of children

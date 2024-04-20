@@ -2,7 +2,12 @@
   <div>
     <h2 class="bg-red">Heading: {{heading}}</h2>
     Change the heading: <input h-bind="heading" type="text" />
-    <h3>Surname: {{ surname }}</h3>
+
+    <input type="text" disabled="disabled" class="{{ margin }}">
+
+    <input type="checkbox" h-bind="showSurname">
+
+    <h3 style="{{ surnameClass }}">Surname: {{ surname }} </h3>
     <h4>FullName: {{fullName}}</h4>
   </div>
 
@@ -12,5 +17,5 @@
   </p>
 
   <Card></Card>
-  <Card></Card>
+  <!-- <Card></Card>
 </article>

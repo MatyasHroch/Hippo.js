@@ -58,6 +58,14 @@ function createBinding(nodeToBind, variables) {
 
   const attributeToBind = getAttributeToBind(nodeToBind);
 
+  console.warn(
+    "im setting " +
+      variable.name +
+      " with value: " +
+      variable.value +
+      " to " +
+      nodeToBind
+  );
   nodeToBind.value = variable.value;
 
   // handle change from the input side

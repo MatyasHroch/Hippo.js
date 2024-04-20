@@ -6,9 +6,9 @@ export default {
     name: "First",
     surname: "Component",
     file: null,
-    isChecked: false,
+    isChecked: true,
     idecko: null,
-    selectedItemIndex: null,
+    selectedItem: "Ahoj",
   },
 
   children: {

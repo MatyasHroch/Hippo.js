@@ -33,6 +33,7 @@ function createVariable(name, value, componentId) {
     deleted: false,
     hidden: false,
     textNodes: [],
+    attributeSetters: [],
     inputNodes: [],
   };
 
@@ -64,6 +65,10 @@ function createVariables(component, variables, componentId = null) {
   return variablesObj;
 }
 
+function variableNameFromCurlyBraces(text) {
+  return text.slice(2, -2).trim();
+}
+
 /**
  * It will recognize if the node is a variable or not.
  * If it is a variable, it will render it. (it returns created text element)
@@ -76,7 +81,7 @@ function renderVariable(nodeText, variables) {
   if (!variables) console.error("No variables provided.");
 
   if (nodeText.startsWith("{{") && nodeText.endsWith("}}")) {
-    const variableName = nodeText.slice(2, -2).trim();
+    const variableName = variableNameFromCurlyBraces(nodeText);
     const variable = variables[variableName];
 
     if (!variable) {
@@ -119,6 +124,19 @@ function reRenderVariable(variable, value) {
     const attribute = getBoundAttribute(boundNode);
     if (attribute) boundNode[attribute] = value;
   }
+
+  for (const setter of variable.attributeSetters) {
+    setter(value);
+  }
+}
+
+function bindToAttribute(variable, node, attribute) {
+  const setter = (value) => {
+    node.setAttribute(attribute.name, value);
+  };
+  setter(variable.value);
+
+  variable.attributeSetters.push(setter);
 }
 
 /**
@@ -195,4 +213,6 @@ export {
   renderVariable,
   findVariables,
   setVariable,
+  variableNameFromCurlyBraces,
+  bindToAttribute,
 };

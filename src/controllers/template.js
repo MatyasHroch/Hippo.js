@@ -1,5 +1,14 @@
-import { getTextNodes } from "../utils/dom_utils.js";
-import { renderVariable, findVariables } from "./variable.js";
+import {
+  getTextNodes,
+  getNodesWithBoundAttributes,
+} from "../utils/dom_utils.js";
+
+import {
+  renderVariable,
+  findVariables,
+  variableNameFromCurlyBraces,
+  bindToAttribute,
+} from "./variable.js";
 
 /**
  * Transforms string to html structure.
@@ -30,10 +39,36 @@ function renderTemplate(template, variables) {
   renderTextNodes(textNodes, variables);
 
   // TODO render all classes that uses variables or properties (vars or props)
+  renderAttributes(clonedTemplate, variables);
+
   // const classNodes = getClassNodes(clonedTemplate);
   // renderClasses(classNodes, variables)
 
   return clonedTemplate;
+}
+
+/**
+ * Render attributes in the template that uses variables.
+ * @param {HTMLElement} template
+ * @param {object<Variable>} variables
+ * It has a side effect and changes the given template.
+ */
+// TODO - DEBUG AND TEST THIS !!!
+function renderAttributes(template, variables) {
+  const nodesWithAttributes = getNodesWithBoundAttributes(template);
+
+  for (const nodeStructure of nodesWithAttributes) {
+    const attributes = nodeStructure.attributes;
+    if (!attributes) return;
+
+    for (const attribute of attributes) {
+      const variableName = variableNameFromCurlyBraces(attribute.value);
+      const variable = variables[variableName];
+      if (variable) {
+        bindToAttribute(variable, nodeStructure.node, attribute);
+      }
+    }
+  }
 }
 
 /**

@@ -8,15 +8,15 @@ import Article from "./components/Article/Article.js";
 // // creates components and stores them in an array
 const components = [];
 
-for (let i = 0; i < 3; i++) {
+for (let i = 0; i < 1; i++) {
   components.push(processComponent(Article));
 }
 
-console.log("");
-for (const varName in Global) {
-  if (Global[varName]) {
-  }
-}
+// console.log("");
+// for (const varName in Global) {
+//   if (Global[varName]) {
+//   }
+// }
 
 // async function createArticles() {
 //   for (let i = 0; i < 250; i++) {}
