@@ -51,26 +51,39 @@ function createBinding(nodeToBind, variables) {
   const attributeValue = nodeToBind.getAttribute(bindingAttribute);
   const variable = variables[attributeValue];
 
-  if (!variable) return console.error("Variable not found: creating binding.");
+  if (!variable)
+    return console.error(
+      `Variable ${attributeValue} not found while creating binding.`
+    );
+
+  const attributeToBind = getAttributeToBind(nodeToBind);
 
   nodeToBind.value = variable.value;
 
   // handle change from the input side
-  //   nodeToBind.addEventListener("change", (e) => changeHandler(e, variable));
-  nodeToBind.addEventListener("input", (e) => changeHandler(e, variable));
+  //   nodeToBind.addEventListener("change", (e) => inputHandler(e, variable));
+  nodeToBind.addEventListener("input", (e) => inputHandler(e, variable));
 
   // handle change from the variable side
   variable.inputNodes.push(nodeToBind);
 }
 
+function getAttributeToBind(nodeToBind) {
+  const tagName = nodeToBind.tagName.toLowerCase();
+  if (nodeToBind.type === "checkbox" || nodeToBind.type === "radio") {
+    return "checked";
+  }
+
+  if (nodeToBind.type === "file") {
+    return;
+  }
+
+  return "value";
+}
+
 function inputHandler(e, variable) {
-  setVariable(variable, e.target.value);
+  const attribute = getAttributeToBind(e.target);
+  setVariable(variable, e.target[attribute]);
 }
 
-function changeHandler(e, variable) {
-  // console.log({ variable });
-  // console.log(e.target.value);
-  setVariable(variable, e.target.value);
-}
-
-export { bindVariables };
+export { bindVariables, getAttributeToBind };

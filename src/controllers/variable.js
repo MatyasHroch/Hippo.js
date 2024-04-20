@@ -1,4 +1,5 @@
 import { Global } from "../globals.js";
+import { getAttributeToBind as getBoundAttribute } from "./two_way_binding.js";
 import "../types/Variable.js";
 
 /**
@@ -109,19 +110,14 @@ function reRenderVariable(variable, value) {
   }
 
   for (const node of variable.textNodes) {
-    // if (variable.fullName.includes("text-")) {
-    //   console.log("in reRenderVariable:");
-    //   console.log("variable:", variable);
-    //   console.log("node:", node);
-    // }
-
     // changing just the text content
     node.textContent = value;
   }
 
   // changing the value of the input and other elements with value attribute
   for (const boundNode of variable.inputNodes) {
-    boundNode.value = value;
+    const attribute = getBoundAttribute(boundNode);
+    if (attribute) boundNode[attribute] = value;
   }
 }
 
@@ -167,11 +163,14 @@ function handleVariableChange(variable) {
  * @param {any} value
  */
 function setVariable(variable, value) {
+  // we dont update the variable if the value is the same, that can solve the cyclic dependency in some cases
+  if (variable.value === value) return;
+
   variable.updating = true;
   variable.value = value;
 
   // if (variable.name == "text")
-  console.log(variable.value, variable.fullName);
+  // console.log(variable.value, variable.fullName);
 
   handleVariableChange(variable);
 

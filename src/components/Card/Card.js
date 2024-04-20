@@ -6,6 +6,9 @@ export default {
     name: "First",
     surname: "Component",
     file: null,
+    isChecked: false,
+    idecko: null,
+    selectedItemIndex: null,
   },
 
   children: {
@@ -20,6 +23,7 @@ export default {
         },
       },
     },
+
     heading1: {
       component: Heading,
       props: {
@@ -40,6 +44,10 @@ export default {
     // this.changeMessage("NEW MESSAGE");
     // this.changeName();
     // console.log(this.emitSomeEvent);
+
+    const select = document.getElementBy;
+
+    this.idecko.set(this.id);
     this.emitSomeEvent("SOME EVENT");
   },
 

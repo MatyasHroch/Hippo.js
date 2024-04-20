@@ -14,16 +14,33 @@
   <div>Surame: {{ surname }}</div>
   <span> </span>
 
-  Heading by TAG:
-
+  Headings by TAG:
   <heading1></heading1>
   <heading2></heading2>
+  End of Headings
 
   <h2>Change the surname, name and message</h2>
   <input h-bind="surname" type="text" />
   <input h-bind="name" type="text" />
   <input h-bind="message" type="text" />
 
-  <input h-bind="file" type="file" />
-  <div>The file: {{file}}</div>
+  <div>
+    <h4>This is a CHECKBOX example</h4>
+    <input h-bind="isChecked" type="checkbox" />
+    <span> {{ isChecked }} </span>
+  </div>
+  <div>
+    <h4>This is a SELECT example</h4>
+    <select h-bind="selectedItemIndex" name="idk" id="">
+      <option value="1">Hello</option>
+      <option value="2">Ahoj</option>
+      <option value="3">Cus</option>
+    </select>
+    {{ selectedItemIndex }}
+  </div>
+  <div>
+    <h4>This is a FILE example</h4>
+    <input h-bind="file" type="file" />
+    <div>The file: {{file}}</div>
+  </div>
 </article>

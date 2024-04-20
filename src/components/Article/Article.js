@@ -3,12 +3,12 @@ import Card from "../Card/Card.js";
 export default {
   // created is called after the component is created
   created() {
-    setTimeout(() => {
-      this.errorMess.set("NEW ERROR MESSAGE");
-      // this.heading.set("NEW HEADING");
-      this.surname.set("NEW SURNAME");
-      console.log("full var 'name'", this.name);
-    }, 3000);
+    // setTimeout(() => {
+    //   this.errorMess.set("NEW ERROR MESSAGE");
+    //   // this.heading.set("NEW HEADING");
+    //   this.surname.set("NEW SURNAME");
+    //   // console.log("full var 'name'", this.name);
+    // }, 3000);
   },
 
   // inside of the Computed you cannot use any computed properties

@@ -44,7 +44,7 @@ function createComputedVariables(
   for (const name in variables) {
     variables[name].expression = boundExpressions[name];
 
-    variables[name].dependencies = getEcpressionDependencies(
+    variables[name].dependencies = getExpressionDependencies(
       component,
       userExpressions[name]
     );
@@ -68,7 +68,7 @@ function createComputedVariables(
  * @param {Variable} variable
  */
 
-function getEcpressionDependencies(component, expression) {
+function getExpressionDependencies(component, expression) {
   const dependencies = [];
 
   const regex = /this.([a-zA-Z0-9]+)/g;
