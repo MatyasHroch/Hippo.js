@@ -5,6 +5,10 @@
     <h3>FirstName: {{ user.firstName}}</h3>
     <h3>LastName: {{ user.lastName}}</h3>
 
+    <h4>Adresa</h4>
+    <span> Ulice {{ user.address.street }}</span>
+    <span> Mesto {{ user.address.city }}</span>
+
     <h2 class="bg-red">Heading: {{heading}}</h2>
     Change the heading: <input h-bind="heading" type="text" />
 

@@ -16,6 +16,11 @@ export default {
       const user = this.user.value;
       user.firstName = "My";
       user.lastName = "Druhy";
+
+      const address = user.address;
+      address.street = "Kostelni";
+      address.city = "Ostrava 154645";
+
       this.user.set(user);
     }, 2 * 1000);
   },
@@ -50,6 +55,11 @@ export default {
     user: {
       firstName: "Ja",
       lastName: "Prvni",
+      address: {
+        street: "Bartolomejska",
+        city: "Ostrava",
+        zip: "12345",
+      },
     },
   },
 

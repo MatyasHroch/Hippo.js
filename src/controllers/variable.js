@@ -129,8 +129,8 @@ function renderVariable(nodeText, variables) {
  * @returns {any | undefined}
  */
 function getValueByKeyPath(variable, keys) {
-  const variablePart = variable.value[keys[0]];
-  for (const i = 1; i < keys.length; i++) {
+  let variablePart = variable.value[keys[0]];
+  for (let i = 1; i < keys.length; i++) {
     // if the key does not exist on the object variable, we can handle that
     const key = keys[i];
     if (variablePart === undefined) {
