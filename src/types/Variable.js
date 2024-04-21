@@ -12,4 +12,5 @@
  * @property {number} componentId
  * @property {Array<Node>} textNodes
  * @property {Array<Node>} inputNodes
+ * @property {Array<{node: Node, expression: Function}>}
  */

@@ -61,6 +61,8 @@ function createComponent(
   component.props = {};
   component.vars = {};
   component.computed = {};
+  component.context = objectToBind;
+  component.rendered = userComponent.rendered;
 
   // creating the id, variables and template for the inner component
 
@@ -160,6 +162,11 @@ function renderComponent(component, recursive = true) {
   component.renderedTemplate = renderedTemplate;
 
   bindVariables(renderedTemplate, allVariables);
+
+  if (component.rendered) {
+    component.rendered = createMethod(component.rendered, component.context);
+    component.rendered();
+  }
 
   if (recursive && component.children) {
     // console.log("In remder Component recursive, arguments to renderChildren:");

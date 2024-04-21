@@ -1,5 +1,7 @@
 import { Global } from "../globals.js";
 import { getAttributeToBind as getBoundAttribute } from "./two_way_binding.js";
+import { isObject } from "../utils/shortcuts.js";
+
 import "../types/Variable.js";
 
 /**
@@ -35,6 +37,8 @@ function createVariable(name, value, componentId) {
     textNodes: [],
     attributeSetters: [],
     inputNodes: [],
+    // {node: Node, expression: Function}
+    textNodesWithExpression: [],
   };
 
   // setting the public method 'set' for setting the variable value
@@ -85,7 +89,26 @@ function renderVariable(nodeText, variables) {
     const variable = variables[variableName];
 
     if (!variable) {
-      console.error("Variable not found.");
+      const varAndKeys = variableName.split(".");
+      if (varAndKeys.length >= 1) {
+        const composedVariable = variables[varAndKeys[0]];
+        let keys = varAndKeys.slice(1);
+        const expression = () => {
+          return getValueByKeyPath(composedVariable, keys);
+        };
+        const value = expression();
+        if (value !== undefined && value !== null) {
+          const element = document.createTextNode(value);
+          composedVariable.textNodesWithExpression.push({
+            node: element,
+            expression: expression,
+          });
+
+          return element;
+        }
+      }
+
+      console.error(`Variable ${variableName} not found.`);
       return document.createTextNode("");
     }
 
@@ -100,23 +123,59 @@ function renderVariable(nodeText, variables) {
 }
 
 /**
+ * From array of keys it safely returns value from object variable
+ * @param {Variable} variable
+ * @param {Array<string>} keys
+ * @returns {any | undefined}
+ */
+function getValueByKeyPath(variable, keys) {
+  const variablePart = variable.value[keys[0]];
+  for (const i = 1; i < keys.length; i++) {
+    // if the key does not exist on the object variable, we can handle that
+    const key = keys[i];
+    if (variablePart === undefined) {
+      return undefined;
+    }
+    // to the next iteration we go deeper to the object
+    variablePart = variablePart[key];
+  }
+  return variablePart;
+}
+
+/**
  * Re-renders variables values in the DOM
  * @param {Variable} variable
  * @param {any} value
  */
 function reRenderVariable(variable, value) {
-  if (variable === undefined || variable === null) {
+  if (variable === null) {
     console.log(variable);
     console.error("Variable not provided.");
+  }
 
+  if (value === null || value === undefined) {
     console.log(value);
-    console.error("Value not provided.");
+    console.warn();
+    ("Value is not printed because of its nothingness");
     value = "";
   }
 
   for (const node of variable.textNodes) {
     // changing just the text content
     node.textContent = value;
+  }
+
+  if (variable.textNodesWithExpression.length > 0) {
+    for (const { node, expression } of variable.textNodesWithExpression) {
+      // if the value is "" , we know, that there is no reason to evaluate the expression
+      if (value === "") {
+        node.textContent = value;
+      } else {
+        // changing just the text content with the expression value
+        const newValue = expression();
+        node.textContent = newValue;
+      }
+    }
   }
 
   // changing the value of the input and other elements with value attribute
@@ -182,7 +241,7 @@ function handleVariableChange(variable) {
  */
 function setVariable(variable, value) {
   // we dont update the variable if the value is the same, that can solve the cyclic dependency in some cases
-  if (variable.value === value) return;
+  if (!isObject(value) && variable.value === value) return;
 
   variable.updating = true;
   variable.value = value;

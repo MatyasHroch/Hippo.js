@@ -2,13 +2,22 @@ import Card from "../Card/Card.js";
 
 export default {
   // created is called after the component is created
-  created() {
+  rendered() {
     // setTimeout(() => {
     //   this.errorMess.set("NEW ERROR MESSAGE");
     //   // this.heading.set("NEW HEADING");
     //   this.surname.set("NEW SURNAME");
     //   // console.log("full var 'name'", this.name);
     // }, 3000);
+
+    setTimeout(() => {
+      this.heading.set("NEW HEADING");
+      console.log("IM CHANGING THE VARIABLES !!!");
+      const user = this.user.value;
+      user.firstName = "My";
+      user.lastName = "Druhy";
+      this.user.set(user);
+    }, 2 * 1000);
   },
 
   // inside of the Computed you cannot use any computed properties
@@ -38,6 +47,10 @@ export default {
     disabled: false,
     margin: "m-2",
     showSurname: true,
+    user: {
+      firstName: "Ja",
+      lastName: "Prvni",
+    },
   },
 
   // TODO set number of children

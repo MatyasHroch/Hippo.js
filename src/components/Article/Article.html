@@ -1,5 +1,10 @@
 <article class="border-s rounder-s p-4 fit-content">
   <div>
+
+    <h2>User:</h2>
+    <h3>FirstName: {{ user.firstName}}</h3>
+    <h3>LastName: {{ user.lastName}}</h3>
+
     <h2 class="bg-red">Heading: {{heading}}</h2>
     Change the heading: <input h-bind="heading" type="text" />
 
@@ -7,8 +12,12 @@
 
     <input type="checkbox" h-bind="showSurname">
 
-    <h3 style="{{ surnameClass }}">Surname: {{ surname }} </h3>
+    <h3>Surname: {{ surname }} </h3>
+
     <h4>FullName: {{fullName}}</h4>
+
+
+
   </div>
 
   <p>
