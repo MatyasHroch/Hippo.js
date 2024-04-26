@@ -27,7 +27,14 @@ function bindVariables(template, all_variables) {
  * @returns {NodeListOf<Element>}
  */
 function getNodesToBind(template) {
-  if (!template || !template.querySelectorAll) returrn []
+  if (
+    !template ||
+    !template.querySelectorAll ||
+    typeof !template.querySelectorAll == "function"
+  ) {
+    return [];
+  }
+
   return template.querySelectorAll(`[${bindingAttribute}]`);
 }
 
