@@ -40,6 +40,11 @@ export default {
       }
       return "display: none;";
     },
+    fullAddress() {
+      const user = this.user.value;
+      const address = user.address;
+      return `${address.street}, ${address.city}, ${address.zip}`;
+    },
   },
 
   // new reactive variables
@@ -65,7 +70,9 @@ export default {
 
   // TODO set number of children
   // TODO load all the possible components -> maybe in the main.js
-
+  // TODO children will be a function and it will return the object
+  // TODO the properties then can be accessed by the children
+  // TODO the properties can be default or computed (so functions or the values)
   children: {
     card: {
       component: Card,
