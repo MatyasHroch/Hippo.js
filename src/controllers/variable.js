@@ -239,15 +239,16 @@ function handleVariableChange(variable) {
  * @param {Variable} variable
  * @param {any} value
  */
-function setVariable(variable, value) {
+function setVariable(variable, value = null) {
   // we dont update the variable if the value is the same, that can solve the cyclic dependency in some cases
   if (!isObject(value) && variable.value === value) return;
 
-  variable.updating = true;
-  variable.value = value;
+  // if the variable is nested, we dont need the new value at all, it is a primitive, we need to set the value
+  if (!isObject(variable.value)) {
+    variable.value = value;
+  }
 
-  // if (variable.name == "text")
-  // console.log(variable.value, variable.fullName);
+  variable.updating = true;
 
   handleVariableChange(variable);
 

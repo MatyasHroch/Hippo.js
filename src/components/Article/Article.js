@@ -2,27 +2,27 @@ import Card from "../Card/Card.js";
 
 export default {
   // created is called after the component is created
-  rendered() {
-    // setTimeout(() => {
-    //   this.errorMess.set("NEW ERROR MESSAGE");
-    //   // this.heading.set("NEW HEADING");
-    //   this.surname.set("NEW SURNAME");
-    //   // console.log("full var 'name'", this.name);
-    // }, 3000);
+  // setTimeout(() => {
+  //   this.errorMess.set("NEW ERROR MESSAGE");
+  //   // this.heading.set("NEW HEADING");
+  //   this.surname.set("NEW SURNAME");
+  //   // console.log("full var 'name'", this.name);
+  // }, 3000);
+  // console.log("IM CHANGING THE VARIABLES !!!");
 
+  // const user = this.user.value;
+  // user.firstName = "My";
+  // user.lastName = "Druhy";
+
+  rendered() {
     setTimeout(() => {
       this.heading.set("NEW HEADING");
-      console.log("IM CHANGING THE VARIABLES !!!");
-      const user = this.user.value;
-      user.firstName = "My";
-      user.lastName = "Druhy";
-
       const address = user.address;
-      address.street = "Kostelni";
-      address.city = "Ostrava 154645";
+      address.street = "Šemberova";
+      address.city = "Olomouc";
 
       this.user.set(user);
-    }, 2 * 1000);
+    }, 5 * 1000);
   },
 
   // inside of the Computed you cannot use any computed properties
@@ -49,14 +49,6 @@ export default {
 
   // new reactive variables
   vars: {
-    heading: "OLD HEADING",
-    viewMax: 10,
-    errorMess: "OLD ERROR MESSAGE",
-    name: "Albert",
-    surname: "Einstein",
-    disabled: false,
-    margin: "m-2",
-    showSurname: true,
     user: {
       firstName: "Ja",
       lastName: "Prvni",
@@ -66,6 +58,14 @@ export default {
         zip: "12345",
       },
     },
+    heading: "OLD HEADING",
+    viewMax: 10,
+    errorMess: "OLD ERROR MESSAGE",
+    name: "Albert",
+    surname: "Einstein",
+    disabled: false,
+    margin: "m-2",
+    showSurname: true,
   },
 
   // TODO set number of children

@@ -44,6 +44,8 @@ function createComputedVariables(
   for (const name in variables) {
     variables[name].expression = boundExpressions[name];
 
+    console.log();
+
     variables[name].dependencies = getExpressionDependencies(
       component,
       userExpressions[name]
@@ -54,10 +56,16 @@ function createComputedVariables(
     }
   }
 
-  // TODO - And were DONE
-
   for (const name in variables) {
-    // console.log("Computed object before return:", name, variables[name].value);
+    console.log(
+      "Computed object before return:",
+      name,
+      variables[name].expression
+    );
+    console.log(
+      "and evaluated expression now is:",
+      variables[name].expression()
+    );
   }
 
   return variables;
@@ -80,8 +88,17 @@ function getExpressionDependencies(component, expression) {
   while (match != null) {
     const dependency = match[1];
 
+    // if it is a primitive value
     if (allVars[dependency]) {
       dependencies.push(allVars[dependency]);
+    }
+
+    console.log("Dependency:", dependency);
+    // if it is an object value (nested)
+    const nestedVarKeys = dependency.split(".");
+    if (nestedVarKeys && nestedVarKeys.length && nestedVarKeys.length > 1) {
+      const nestedVar = allVars[nestedVarKeys[0]];
+      dependencies.push(currentVar);
     }
 
     match = regex.exec(expression);

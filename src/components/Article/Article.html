@@ -1,16 +1,22 @@
 <article class="border-s rounder-s p-4 fit-content">
   <div>
 
-    <h2>User:</h2>
+    <!-- <h2>User:</h2>
     <h3>FirstName: {{ user.firstName}}</h3>
-    <h3>LastName: {{ user.lastName}}</h3>
-
-    <h4>Adresa</h4>
-    <span> Ulice {{ user.address.street }}</span>
-    <span> Mesto {{ user.address.city }}</span>
+    <h3>LastName: {{ user.lastName}}</h3> -->
 
     <h2 class="bg-red">Heading: {{heading}}</h2>
-    Change the heading: <input h-bind="heading" type="text" />
+
+    <h4>Adresa</h4>
+    <div>
+      <span>CELÁ ADRESA</span>:
+      <span>{{fullAddress}}</span>
+    </div>
+      <span> Ulice: {{ user.address.street }}</span>
+      <div> Mesto: {{ user.address.city }}</div>
+
+
+    <!-- Change the heading: <input h-bind="heading" type="text" />
 
     <input type="text" disabled="disabled" class="{{ margin }}">
 
@@ -18,17 +24,15 @@
 
     <h3>Surname: {{ surname }} </h3>
 
-    <h4>FullName: {{fullName}}</h4>
-
-
+    <h4>FullName: {{fullName}}</h4> -->
 
   </div>
 
-  <p>
+  <!-- <p>
     This is a cool paragraph. This is a cool paragraph. This is a cool
     paragraph.
   </p>
 
-  <Card></Card>
+  <Card></Card> -->
   <!-- <Card></Card>
 </article>

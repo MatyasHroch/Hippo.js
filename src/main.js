@@ -4,12 +4,14 @@ import "./types/InnerComponent.js";
 import { processComponent } from "./controllers/component.js";
 import { Global } from "./globals.js";
 import Article from "./components/Article/Article.js";
+import UserCard from "./components/UserCard/UserCard.js";
 
+console.log("Main.js");
 // // creates components and stores them in an array
 const components = [];
 
-for (let i = 0; i < 1; i++) {
-  components.push(processComponent(Article));
+for (let i = 0; i < 50; i++) {
+  components.push(processComponent(UserCard));
 }
 
 // console.log("");
