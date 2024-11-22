@@ -4,8 +4,8 @@ import "./Variable.js";
  * @typedef {Object} InnerComponent
  * @property {number} id
  * @property {HTMLElement | string} template
- * @property {Object<Function>} methods
- * @property {Object<Variable>} vars
+ * @property {Object<string,Function>} methods
+ * @property {Object<string,Variable>} vars
  * @property {Function} created
  * @property {Object<InnerComponent>} children
  */

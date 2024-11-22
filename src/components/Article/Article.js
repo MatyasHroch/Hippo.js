@@ -76,7 +76,6 @@ export default {
   children: {
     card: {
       component: Card,
-
       props: {
         heading() {
           const heading = this.heading.value;
